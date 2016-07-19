@@ -6,6 +6,10 @@
 
     <string name="action_settings">Settings</string>
 
-    <string name="nav_nd_option1">My Arg </string>
+    <!--Navigation drawer Options    !-->
+    <string name="nav_nd_ingredients">Ingredients for this week </string>
+    <string name="nav_nd_foods">Foods </string>
+    <string name="nav_nd_search">Search Food </string>
+    <string name="nav_nd_option">Options </string>
 
 </resources>
