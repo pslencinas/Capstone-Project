@@ -39,6 +39,7 @@ public class FoodDbHelper extends SQLiteOpenHelper {
                FoodEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                FoodEntry.COLUMN_ID + " INTEGER NOT NULL, " +
                FoodEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
+               FoodEntry.COLUMN_IMAGE_ID + " TEXT NOT NULL, " +
                FoodEntry.COLUMN_DESCRIPTION + " TEXT NOT NULL " +
 
                ");";

@@ -43,7 +43,8 @@ public class FoodContract {
 
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_TITLE = "title";
-        public static final String COLUMN_DESCRIPTION = "overview";
+        public static final String COLUMN_IMAGE_ID = "image_id";
+        public static final String COLUMN_DESCRIPTION = "description";
 
 
         public static Uri buildMovieUri(long id) {

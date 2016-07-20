@@ -54,6 +54,7 @@ public class FetchJsonDataTask extends AsyncTask<String, Void, String[]> {
 
         final String JSON_LIST = "foods";
         final String JSON_TITLE = "title";
+        final String JSON_IMAGE_ID = "image_id";
         final String JSON_DESCRIPTION = "description";
         final String JSON_ID = "id";
 
@@ -68,6 +69,7 @@ public class FetchJsonDataTask extends AsyncTask<String, Void, String[]> {
 
                 JSONObject movie = moviesArray.getJSONObject(i);
                 String title = movie.getString(JSON_TITLE);
+                String image_id = movie.getString(JSON_IMAGE_ID);
                 String description = movie.getString(JSON_DESCRIPTION);
                 String id = movie.getString(JSON_ID);
 
@@ -76,6 +78,7 @@ public class FetchJsonDataTask extends AsyncTask<String, Void, String[]> {
 
                 foodsValues.put(FoodEntry.COLUMN_ID, id);
                 foodsValues.put(FoodEntry.COLUMN_TITLE, title);
+                foodsValues.put(FoodEntry.COLUMN_IMAGE_ID, image_id);
                 foodsValues.put(FoodEntry.COLUMN_DESCRIPTION, description);
 
                 cVVector.add(foodsValues);

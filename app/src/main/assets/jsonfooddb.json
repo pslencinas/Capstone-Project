@@ -2,11 +2,13 @@
 	"foods":[
 		{
 			"title":"Milanesas",
+            "image_id":"mila_0001.jpg",
 			"description":"como se hace",
 			"id":"0001"
 		},
 		{
-			"title":"Empanadas",
+			"title":"Fideos",
+            "image_id":"fide_0001.jpg",
 			"description":"asi se hacen",
 			"id":"0002"
 		}
