@@ -1,8 +1,12 @@
 package com.example.android.myargmenuplanner;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,22 +22,17 @@ import com.example.android.myargmenuplanner.data.FetchJsonDataTask;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private boolean mTwoPane=false;
+    public Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setContentView(R.layout.activity_main_nd);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -44,8 +43,26 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FetchJsonDataTask fetch = new FetchJsonDataTask(this);
-        fetch.execute();
+
+
+        if (findViewById(R.id.food_detail_container) != null) {
+            mTwoPane = true;
+            Log.d(LOG_TAG, "TABLET!!!!!");
+            if (savedInstanceState == null) {
+
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.food_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
+//                        .commit();
+            }
+        } else {
+            Log.d(LOG_TAG, "No es una Tablet");
+            getSupportFragmentManager().findFragmentById(R.id.fragment_food);
+            mTwoPane = false;
+
+        }
+
+
+
     }
 
     @Override
@@ -89,6 +106,9 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_ingredients) {
             // Handle the camera action
         } else if (id == R.id.nav_foods) {
+
+            Intent intent = new Intent(this, FoodsActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_search) {
 
