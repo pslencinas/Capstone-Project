@@ -31,6 +31,10 @@ public class FoodProvider extends ContentProvider {
     static final int FOOD = 100;
     static final int FOOD_WITH_ID = 101;
 
+    static final int INGR = 200;
+    static final int INGR_WITH_ID = 201;
+
+
     static UriMatcher buildUriMatcher() {
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -38,6 +42,8 @@ public class FoodProvider extends ContentProvider {
 
         matcher.addURI(authority, FoodContract.PATH_FOOD, FOOD);
         matcher.addURI(authority, FoodContract.PATH_FOOD + "/*", FOOD_WITH_ID);
+        matcher.addURI(authority, FoodContract.PATH_INGR, INGR);
+        matcher.addURI(authority, FoodContract.PATH_INGR + "/*", INGR_WITH_ID);
 
         return matcher;
 
@@ -134,7 +140,7 @@ public class FoodProvider extends ContentProvider {
 
                 long _id = db.insert(FoodContract.FoodEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
-                    returnUri = FoodContract.FoodEntry.buildMovieUri(_id);
+                    returnUri = FoodContract.FoodEntry.buildFoodUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -164,6 +170,10 @@ public class FoodProvider extends ContentProvider {
             case FOOD_WITH_ID:
                 rowsDeleted = db.delete(
                         FoodContract.FoodEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case INGR:
+                rowsDeleted = db.delete(
+                        FoodContract.IngrEntry.TABLE_NAME, selection, selectionArgs);
                 break;
 
             default:
@@ -229,6 +239,23 @@ public class FoodProvider extends ContentProvider {
                 getContext().getContentResolver().notifyChange(uri, null);
                 return returnCount;
 
+            case INGR:
+                db.beginTransaction();
+                returnCount = 0;
+                try {
+                    for (ContentValues value : values) {
+
+                        long _id = db.insert(FoodContract.IngrEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
 
             default:
                 return super.bulkInsert(uri, values);

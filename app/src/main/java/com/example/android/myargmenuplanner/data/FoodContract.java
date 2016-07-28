@@ -28,6 +28,7 @@ public class FoodContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_FOOD = "foods";
+    public static final String PATH_INGR = "ingredients";
 
     public static final class FoodEntry implements BaseColumns {
 
@@ -40,26 +41,49 @@ public class FoodContract {
 
         // Table name
         public static final String TABLE_NAME = "food";
-
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_IMAGE_ID = "image_id";
         public static final String COLUMN_DESCRIPTION = "description";
 
-
-        public static Uri buildMovieUri(long id) {
+        // content://CONTENT_AUTHORITY/foods
+        public static Uri buildFoodUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-
-        //ejemplo:  content://authority/popular&id=movie_id
-        public static Uri buildMovieUriByMovie(long movie_id) {
-            return CONTENT_URI.buildUpon().appendPath(Long.toString(movie_id)).build();
-        }
-
         public static String getFoodIDbyUri(Uri uri) {
+
             return uri.getPathSegments().get(1);
         }
+
+
+    }
+
+    public static final class IngrEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_INGR).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INGR;
+
+
+        // Table name
+        public static final String TABLE_NAME = "ingredients";
+        public static final String COLUMN_ID_FOOD = "id_food";
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_QTY = "qty";
+        public static final String COLUMN_UNIT = "unit";
+
+        // content://CONTENT_AUTHORITY/foods
+        public static Uri buildIngredientsUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static String getIngredientsIDbyUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
 
     }
 

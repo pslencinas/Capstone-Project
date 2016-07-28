@@ -1,30 +1,39 @@
 package com.example.android.myargmenuplanner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.myargmenuplanner.data.FetchJsonDataTask;
+import com.example.android.myargmenuplanner.data.FoodContract;
+
+import static com.example.android.myargmenuplanner.FoodsFragment.COL_ID;
+import static com.example.android.myargmenuplanner.R.id.toolbar;
 
 
 public class MainFragment extends Fragment{
 
     private final String LOG_TAG = MainFragment.class.getSimpleName();
     public static ListView listView;
-    private int qtyMovies;
+
     private int mPosition = ListView.INVALID_POSITION;
-    public static String orderBy = "popular";
+
+    public Toolbar toolbar;
 
     public Context mContext;
 
@@ -58,12 +67,10 @@ public class MainFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //mMovieAdapter = new MovieAdapter(getActivity(), null, 0);
 
-        View rootView = inflater.inflate(R.layout.activity_main_nd, container, false);
+        //Log.i(LOG_TAG, "Dentro de onCreateView Main Fragment");
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         listView = (ListView) rootView.findViewById(R.id.listview_foods);
-        //listView.setAdapter(mMovieAdapter);
-
 
 
         FetchJsonDataTask fetch = new FetchJsonDataTask(getActivity());
@@ -78,8 +85,8 @@ public class MainFragment extends Fragment{
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 if (cursor != null) {
 
-//                    ((Callback) getActivity()).onItemSelected(MovieContract.MovieEntry.
-//                            buildMovieUriByMovie(cursor.getLong(COL_ID)));
+                    ((Callback) getActivity()).onItemSelected(FoodContract.FoodEntry.
+                            buildFoodUri(cursor.getLong(COL_ID)));
 
                 }
                 mPosition = position;
@@ -95,6 +102,7 @@ public class MainFragment extends Fragment{
 
         super.onActivityCreated(savedInstanceState);
     }
+
 
 
 //

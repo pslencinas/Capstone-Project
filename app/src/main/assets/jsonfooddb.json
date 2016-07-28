@@ -11,7 +11,19 @@
             "image_id":"fide_0001.jpg",
 			"description":"asi se hacen",
 			"id":"0002"
-		}
+		},
+        {
+          "title":"Empanadas",
+          "image_id":"empa_0001.jpg",
+          "description":"Empanadas Tucumanas",
+          "id":"0003"
+        },
+        {
+          "title":"Asado",
+          "image_id":"asad_0001.jpg",
+          "description":"A la parrilla",
+          "id":"0004"
+        }
 	]
 
 

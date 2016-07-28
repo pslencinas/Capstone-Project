@@ -24,6 +24,7 @@ import android.util.Log;
 
 import com.example.android.myargmenuplanner.BuildConfig;
 import com.example.android.myargmenuplanner.data.FoodContract.FoodEntry;
+import com.example.android.myargmenuplanner.data.FoodContract.IngrEntry;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +38,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
 
+import static android.R.attr.id;
+import static com.example.android.myargmenuplanner.FoodsFragment.image_id;
+
 public class FetchJsonDataTask extends AsyncTask<String, Void, String[]> {
 
     private final String LOG_TAG = FetchJsonDataTask.class.getSimpleName();
@@ -49,7 +53,7 @@ public class FetchJsonDataTask extends AsyncTask<String, Void, String[]> {
     }
 
 
-    private void getDataFromJson(String JsonStr)
+    private void getDataFoodFromJson(String JsonStr)
             throws JSONException {
 
         final String JSON_LIST = "foods";
@@ -74,6 +78,7 @@ public class FetchJsonDataTask extends AsyncTask<String, Void, String[]> {
                 String id = movie.getString(JSON_ID);
 
 
+
                 ContentValues foodsValues = new ContentValues();
 
                 foodsValues.put(FoodEntry.COLUMN_ID, id);
@@ -84,20 +89,19 @@ public class FetchJsonDataTask extends AsyncTask<String, Void, String[]> {
                 cVVector.add(foodsValues);
 
             }
-
-
-
                 int inserted = 0;
-//
-//            //delete database
-//            int rowdeleted= mContext.getContentResolver().delete(FoodEntry.CONTENT_URI, null, null);
-//
+
+//            delete database
+            int rowdeleted= mContext.getContentResolver().delete(FoodEntry.CONTENT_URI, null, null);
+
 //            // add to database
+            Log.i(LOG_TAG, "Creando registros en base de datos. Tabla Food: ");
             if ( cVVector.size() > 0 ) {
                 ContentValues[] cvArray = new ContentValues[cVVector.size()];
                 cVVector.toArray(cvArray);
 
                 inserted = mContext.getContentResolver().bulkInsert(FoodEntry.CONTENT_URI, cvArray);
+                Log.i(LOG_TAG, "Registros nuevos creados en tabla Food: "+inserted);
             }
 
 
@@ -110,14 +114,76 @@ public class FetchJsonDataTask extends AsyncTask<String, Void, String[]> {
         }
 
     }
+
+
+    private void getDataIngrFromJson(String JsonStr) throws JSONException {
+
+        final String JSON_LIST = "ingredients";
+        final String JSON_NAME = "name";
+        final String JSON_QTY = "qty";
+        final String JSON_UNIT = "unit";
+        final String JSON_ID_FOOD = "id_food";
+
+
+        try {
+            JSONObject dataJson = new JSONObject(JsonStr);
+            JSONArray ingrArray = dataJson.getJSONArray(JSON_LIST);
+
+            Vector<ContentValues> cVVector = new Vector<ContentValues>(ingrArray.length());
+
+            for (int i = 0; i < ingrArray.length(); i++) {
+
+                JSONObject ingr = ingrArray.getJSONObject(i);
+                String id_food = ingr.getString(JSON_ID_FOOD);
+                String name = ingr.getString(JSON_NAME);
+                String qty = ingr.getString(JSON_QTY);
+                String unit = ingr.getString(JSON_UNIT);
+
+                ContentValues values = new ContentValues();
+
+                values.put(IngrEntry.COLUMN_ID_FOOD, id_food);
+                values.put(IngrEntry.COLUMN_NAME, name);
+                values.put(IngrEntry.COLUMN_QTY, qty);
+                values.put(IngrEntry.COLUMN_UNIT, unit);
+
+                cVVector.add(values);
+
+            }
+            int inserted = 0;
+
+//            delete database
+            int rowdeleted= mContext.getContentResolver().delete(IngrEntry.CONTENT_URI, null, null);
+
+//            // add to database
+            Log.i(LOG_TAG, "Creando registros en base de datos. Tabla Ingredientes ");
+            if ( cVVector.size() > 0 ) {
+                ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                cVVector.toArray(cvArray);
+
+                inserted = mContext.getContentResolver().bulkInsert(IngrEntry.CONTENT_URI, cvArray);
+                Log.i(LOG_TAG, "Registros nuevos creados en Tabla Ingredientes: "+inserted);
+            }
+
+
+
+
+        }
+        catch (JSONException e) {
+            Log.e(LOG_TAG, e.getMessage(), e);
+            e.printStackTrace();
+        }
+
+    }
+
+
     @Override
     protected String[] doInBackground(String... params) {
 
 
         BufferedReader reader = null;
 
-        String JsonStr = null;
-
+        String JsonStrFood = null;
+        String JsonStrIngr = null;
 
         try {
 
@@ -137,11 +203,38 @@ public class FetchJsonDataTask extends AsyncTask<String, Void, String[]> {
             if (buffer.length() == 0) {
                 return null;
             }
-            JsonStr = buffer.toString();
+            JsonStrFood = buffer.toString();
 
-            Log.d(LOG_TAG, "Buffer " + JsonStr);
+            //Log.i(LOG_TAG, "Buffer " + JsonStr);
 
-            getDataFromJson(JsonStr);
+            getDataFoodFromJson(JsonStrFood);
+
+            Log.i(LOG_TAG, "Leyendo registros Ingredientes!!!!!!! ");
+            InputStream inputStreamIngr = mContext.getAssets().open("ingredientsdb.json");
+            StringBuffer bufferIngr = new StringBuffer();
+            if (inputStreamIngr == null) {
+                return null;
+            }
+
+            reader = null;
+            reader = new BufferedReader(new InputStreamReader(inputStreamIngr));
+
+            String  lineIngr;
+            while ((lineIngr = reader.readLine()) != null) {
+                bufferIngr.append(lineIngr + "\n");
+            }
+
+            if (bufferIngr.length() == 0) {
+
+                return null;
+            }
+
+            JsonStrIngr = bufferIngr.toString();
+
+            //Log.i(LOG_TAG, "Buffer Ingredients " + JsonStrIngr);
+
+            getDataIngrFromJson(JsonStrIngr);
+
 
 
         }

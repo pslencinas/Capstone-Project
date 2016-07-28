@@ -20,10 +20,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.android.myargmenuplanner.data.FoodContract.FoodEntry;
+import com.example.android.myargmenuplanner.data.FoodContract.IngrEntry;
 
 public class FoodDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     static final String DATABASE_NAME = "menuplanner.db";
 
@@ -44,9 +45,18 @@ public class FoodDbHelper extends SQLiteOpenHelper {
 
                ");";
 
+        final String SQL_CREATE_INGR_TABLE = "CREATE TABLE " + IngrEntry.TABLE_NAME + " (" +
+
+                IngrEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                IngrEntry.COLUMN_ID_FOOD + " INTEGER NOT NULL, " +
+                IngrEntry.COLUMN_NAME + " TEXT NOT NULL, " +
+                IngrEntry.COLUMN_QTY + " INTEGER NOT NULL, " +
+                IngrEntry.COLUMN_UNIT + " TEXT NOT NULL " +
+
+                ");";
 
         sqLiteDatabase.execSQL(SQL_CREATE_FOOD_TABLE);
-
+        sqLiteDatabase.execSQL(SQL_CREATE_INGR_TABLE);
 
     }
 
@@ -54,6 +64,7 @@ public class FoodDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + FoodEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + IngrEntry.TABLE_NAME);
 
         onCreate(sqLiteDatabase);
     }

@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.myargmenuplanner.data.FoodContract;
 
@@ -42,7 +43,7 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodsAdapter
 
     // Flag to determine if we want to use a separate view for "today".
     private boolean mUseTodayLayout = true;
-
+    final private FoodsAdapterOnClickHandler mClickHandler;
     private Cursor mCursor;
     final private Context mContext;
 
@@ -68,19 +69,21 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodsAdapter
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
-            int dateColumnIndex = mCursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_TITLE);
+            int columnIndex = mCursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_ID);
+            mClickHandler.onClick(mCursor.getLong(columnIndex), this);
+
 
 
         }
     }
 
     public static interface FoodsAdapterOnClickHandler {
-        void onClick(Long date, FoodsAdapterViewHolder vh);
+        void onClick(Long id, FoodsAdapterViewHolder vh);
     }
 
-    public FoodsAdapter(Context context) {
+    public FoodsAdapter(Context context, FoodsAdapterOnClickHandler dh) {
         mContext = context;
-
+        mClickHandler = dh;
 
     }
 
