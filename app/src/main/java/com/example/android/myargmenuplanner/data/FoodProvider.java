@@ -78,20 +78,35 @@ public class FoodProvider extends ContentProvider {
 
     private Cursor getFoodById(Uri uri, String[] projection, String sortOrder) {
 
-        String movieId = FoodContract.FoodEntry.getFoodIDbyUri(uri);
+        String foodId = FoodContract.FoodEntry.getFoodIDbyUri(uri);
 
         return mOpenHelper.getReadableDatabase().query(
                 FoodContract.FoodEntry.TABLE_NAME,
                 projection,                                             // columnas a mostrar
                 sFoodId,                                               // condicion WHERE
-                new String[]{movieId},     // arg del WHERE
+                new String[]{foodId},     // arg del WHERE
                 null,
                 null,
                 sortOrder
         );
     }
 
+    private static final String sIngrByFoodId = FoodContract.IngrEntry.COLUMN_ID_FOOD + " = ? ";
 
+    private Cursor getIngrByFoodId(Uri uri, String[] projection, String sortOrder) {
+
+        String foodId = FoodContract.IngrEntry.getIngredientsIDbyUri(uri);
+
+        return mOpenHelper.getReadableDatabase().query(
+                FoodContract.IngrEntry.TABLE_NAME,
+                projection,                                             // columnas a mostrar
+                sIngrByFoodId,                                          // condicion WHERE
+                new String[]{foodId},                       // arg del WHERE
+                null,
+                null,
+                sortOrder
+        );
+    }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
@@ -104,7 +119,7 @@ public class FoodProvider extends ContentProvider {
             // 'food'
             case FOOD: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
-                        FoodContract.FoodEntry.TABLE_NAME,    // tabla
+                        FoodContract.FoodEntry.TABLE_NAME,      // tabla
                         projection,                             // columnas a mostrar
                         selection,                              // condicion del query
                         selectionArgs,                          // argumentos de la condicion
@@ -118,6 +133,11 @@ public class FoodProvider extends ContentProvider {
             // "food/*"
             case FOOD_WITH_ID: {
                 retCursor = getFoodById(uri, projection, sortOrder);
+                break;
+            }
+            // "ingredients/*"
+            case INGR_WITH_ID: {
+                retCursor = getIngrByFoodId(uri, projection, sortOrder);
                 break;
             }
 

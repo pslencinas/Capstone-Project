@@ -76,7 +76,7 @@ public class FoodContract {
         public static final String COLUMN_UNIT = "unit";
 
         // content://CONTENT_AUTHORITY/foods
-        public static Uri buildIngredientsUri(long id) {
+        public static Uri buildIngrByFoodUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
