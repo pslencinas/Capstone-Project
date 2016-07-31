@@ -10,6 +10,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +31,8 @@ import static com.example.android.myargmenuplanner.R.id.toolbar;
 public class MainFragment extends Fragment{
 
     private final String LOG_TAG = MainFragment.class.getSimpleName();
-    public static ListView listView;
+    private static RecyclerView mRecView;
+    private MenuAdapter mMenuAdapter;
 
     private int mPosition = ListView.INVALID_POSITION;
 
@@ -43,9 +46,9 @@ public class MainFragment extends Fragment{
 
     public interface Callback {
         /**
-         *  for when an item has been selected.
+         * DetailFragmentCallback for when an item has been selected.
          */
-        public void onItemSelected(Uri dateUri);
+        public void onItemSelected(Uri foodUri, Uri ingrUri, MenuAdapter.MenuAdapterViewHolder vh);
     }
 
     @Override
@@ -70,28 +73,26 @@ public class MainFragment extends Fragment{
 
         //Log.i(LOG_TAG, "Dentro de onCreateView Main Fragment");
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        listView = (ListView) rootView.findViewById(R.id.listview_foods);
 
+
+        mRecView = (RecyclerView) rootView.findViewById(R.id.recyclerview_menu);
+        mRecView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mMenuAdapter = new MenuAdapter(getActivity(), new MenuAdapter.MenuAdapterOnClickHandler() {
+            @Override
+            public void onClick(Long id, MenuAdapter.MenuAdapterViewHolder vh) {
+
+                ((MainFragment.Callback) getActivity())
+                        .onItemSelected(FoodContract.FoodEntry.buildFoodUri(id)
+                                ,FoodContract.IngrEntry.buildIngrByFoodUri(id), vh );
+            }
+        });
+
+
+        mRecView.setAdapter(mMenuAdapter);
 
         FetchJsonDataTask fetch = new FetchJsonDataTask(getActivity());
         fetch.execute();
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                if (cursor != null) {
-
-                    ((Callback) getActivity()).onItemSelected(FoodContract.FoodEntry.
-                            buildFoodUri(cursor.getLong(COL_ID)));
-
-                }
-                mPosition = position;
-            }
-        });
 
         return rootView;
     }

@@ -29,6 +29,7 @@ public class FoodContract {
 
     public static final String PATH_FOOD = "foods";
     public static final String PATH_INGR = "ingredients";
+    public static final String PATH_MENU = "menu";
 
     public static final class FoodEntry implements BaseColumns {
 
@@ -86,6 +87,37 @@ public class FoodContract {
 
 
     }
+
+    public static final class MenuEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_MENU).build();
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MENU;
+
+
+        // Table name
+        public static final String TABLE_NAME = "menu";
+        public static final String COLUMN_ID_MENU = "id_menu";
+        public static final String COLUMN_DATE = "date";
+        public static final String COLUMN_LAUNCH1 = "launch1";
+        public static final String COLUMN_LAUNCH2 = "launch2";
+        public static final String COLUMN_DINNER1 = "dinner1";
+        public static final String COLUMN_DINNER2 = "dinner2";
+
+        // content://CONTENT_AUTHORITY/foods
+        public static Uri buildMenuByFoodUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static String getMenuIDbyUri(Uri uri) {
+            return uri.getPathSegments().get(1);
+        }
+
+
+    }
+
 
 
 

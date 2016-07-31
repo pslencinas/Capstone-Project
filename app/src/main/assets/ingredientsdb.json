@@ -1,0 +1,22 @@
+{
+	"ingredients":[
+          {"id_food":"0001",            "name": "Carne",            "qty": "1",            "unit": "Kg"          },
+          {"id_food":"0001",            "name": "Pan rayado",       "qty": "1",            "unit": "Kg"          },
+          {"id_food":"0001",            "name": "Huevos",            "qty": "2",            "unit": "u"          },
+          {"id_food":"0001",            "name": "Perejil",            "qty": "200",            "unit": "g"          },
+          {"id_food":"0001",            "name": "Ajo",            "qty": "1",            "unit": "u"          },
+          {"id_food":"0002",            "name": "Fideos",            "qty": "1",            "unit": "u"          },
+          {"id_food":"0002",            "name": "Pure de Tomates",            "qty": "1",            "unit": "u"          },
+          {"id_food":"0002",            "name": "Cebolla",            "qty": "2",            "unit": "u"          },
+          {"id_food":"0003",            "name": "Carne Picada",            "qty": "1",            "unit": "Kg"          },
+          {"id_food":"0003",            "name": "Cebolla",            "qty": "1",            "unit": "Kg"          },
+          {"id_food":"0003",            "name": "Tapas de empanadas",            "qty": "1",            "unit": "u"          },
+          {"id_food":"0004",            "name": "Asado",            "qty": "1",            "unit": "Kg"          },
+          {"id_food":"0004",            "name": "Vacio",            "qty": "1",            "unit": "Kg"          },
+          {"id_food":"0004",            "name": "Morcilla",            "qty": "4",            "unit": "u"          }
+	]
+
+
+}
+
+
