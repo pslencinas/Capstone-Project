@@ -10,6 +10,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -26,75 +28,72 @@ import android.widget.Toast;
 
 import com.example.android.myargmenuplanner.data.FetchJsonDataTask;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements FoodsFragment.Callback{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private boolean mTwoPane=false;
-    public Toolbar toolbar;
+
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
+    private FragmentManager mFragmentManager;
+    private FragmentTransaction mFragmentTransaction;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"));
-        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        // Setup the DrawerLayout and NavigationView
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view) ;
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        /**
+         * Lets inflate the very first fragment
+         * Here , we are inflating the TabFragment as the first Fragment
+         */
+
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();
+
+/**
+ * Setup click events on the Navigation View Items.
+ */
+
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                mDrawerLayout.closeDrawers();
+
+
+
+                if (menuItem.getItemId() == R.id.nav_foods) {
+                    Log.i(LOG_TAG, "Click on Foods");
+                    FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.containerView,new FoodsFragment()).commit();
+
+
+                }
+
+
+                return false;
             }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        /**
+         * Setup Drawer Toggle of the Toolbar
+         */
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout, toolbar,R.string.app_name,
+                R.string.app_name);
 
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-
-        if (findViewById(R.id.food_detail_container) != null) {
-            mTwoPane = true;
-            Log.d(LOG_TAG, "TABLET!!!!!");
-            if (savedInstanceState == null) {
-
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.food_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
-//                        .commit();
-            }
-        } else {
-            Log.d(LOG_TAG, "No es una Tablet");
-            getSupportFragmentManager().findFragmentById(R.id.fragment);
-            mTwoPane = false;
-
-        }
+        mDrawerToggle.syncState();
 
 
 
@@ -132,30 +131,29 @@ public class MainActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+    public void onItemSelected(Uri contentUriFood, Uri contentUriIngr, FoodsAdapter.FoodsAdapterViewHolder vh) {
+        if (mTwoPane) {
 
-        if (id == R.id.nav_ingredients) {
-            // Handle the camera action
-        } else if (id == R.id.nav_foods) {
-
-            Log.i(LOG_TAG, "Click on Foods");
-            Intent intent = new Intent(this, FoodsActivity.class);
+//            Bundle args = new Bundle();
+//            args.putParcelable(DetailFragment.DETAIL_URI, contentUri);
+//
+//            DetailFragment fragment = new DetailFragment();
+//            fragment.setArguments(args);
+//
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+//                    .commit();
+        } else {
+            //Intent intent = new Intent(this, DetailFoodActivity.class).setData(contentUri);
+            Intent intent = new Intent(this, DetailFoodActivity.class);
+            Bundle extras = new Bundle();
+            extras.putString("URI_FOOD", contentUriFood.toString());
+            extras.putString("URI_INGR", contentUriIngr.toString());
+            intent.putExtras(extras);
             startActivity(intent);
-
-
-        } else if (id == R.id.nav_search) {
-
-        } else if (id == R.id.nav_option) {
+            //Toast.makeText(this,"Click on: "+contentUri.toString(), Toast.LENGTH_SHORT).show();
 
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 }
