@@ -4,10 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.example.android.myargmenuplanner.TabFragment1;
-import com.example.android.myargmenuplanner.TabFragment2;
-import com.example.android.myargmenuplanner.TabFragment3;
-
 
 public class PagerAdapter extends FragmentPagerAdapter{
 
@@ -23,13 +19,13 @@ public class PagerAdapter extends FragmentPagerAdapter{
 
         switch (position) {
             case 0:
-                TabFragment1 tab1 = new TabFragment1();
+                TabFragmentLW tab1 = new TabFragmentLW();
                 return tab1;
             case 1:
-                TabFragment2 tab2 = new TabFragment2();
+                TabFragmentTW tab2 = new TabFragmentTW();
                 return tab2;
             case 2:
-                TabFragment3 tab3 = new TabFragment3();
+                TabFragmentNW tab3 = new TabFragmentNW();
                 return tab3;
             default:
                 return null;

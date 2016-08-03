@@ -2,7 +2,7 @@
 <manifest package="com.example.android.myargmenuplanner"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -21,30 +20,31 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".FoodsActivity"
             android:label="@string/title_activity_food_detail"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainActivity" />
+                android:value="MainActivity"/>
         </activity>
         <activity
             android:name=".DetailFoodActivity"
             android:label="@string/title_activity_food_detail"
-            android:parentActivityName=".FoodsActivity" >
+            android:parentActivityName=".FoodsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="FoodsActivity" />
+                android:value="FoodsActivity"/>
         </activity>
 
         <provider
-            android:authorities="com.example.android.myargmenuplanner"
             android:name=".data.FoodProvider"
+            android:authorities="com.example.android.myargmenuplanner"
             android:enabled="true"
             android:exported="true"/>
 
+        <activity android:name=".AddMenuActivity">
+        </activity>
     </application>
 
 </manifest>

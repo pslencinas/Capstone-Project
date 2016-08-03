@@ -1,7 +1,5 @@
 package com.example.android.myargmenuplanner;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public class TabFragment1 extends Fragment {
+public class TabFragmentLW extends Fragment {
 
 
-    public TabFragment1() {
+    public TabFragmentLW() {
         // Required empty public constructor
     }
 
@@ -22,7 +20,7 @@ public class TabFragment1 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tab_fragment1, container, false);
+        return inflater.inflate(R.layout.tab_fragment_lw, container, false);
     }
 
 

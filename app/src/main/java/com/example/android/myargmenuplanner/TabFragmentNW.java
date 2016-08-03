@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TabFragment3 extends Fragment {
+public class TabFragmentNW extends Fragment {
 
 
-    public TabFragment3() {
+    public TabFragmentNW() {
         // Required empty public constructor
     }
 
@@ -23,7 +23,7 @@ public class TabFragment3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tab_fragment3, container, false);
+        return inflater.inflate(R.layout.tab_fragment_nw, container, false);
     }
 
 }

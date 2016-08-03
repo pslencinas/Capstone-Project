@@ -36,7 +36,7 @@ public class TabFragment extends Fragment {
          *Set an Apater for the View Pager
          */
         viewPager.setAdapter(new MyAdapter(getChildFragmentManager()));
-
+        viewPager.setCurrentItem(1, false);
         /**
          * Now , this is a workaround ,
          * The setupWithViewPager dose't works without the runnable .
@@ -68,9 +68,9 @@ public class TabFragment extends Fragment {
         public Fragment getItem(int position)
         {
             switch (position){
-                case 0 : return new TabFragment1();
-                case 1 : return new TabFragment2();
-                case 2 : return new TabFragment3();
+                case 0 : return new TabFragmentLW();
+                case 1 : return new TabFragmentTW();
+                case 2 : return new TabFragmentNW();
             }
             return null;
         }
