@@ -27,9 +27,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="dinner1">Dinner</string>
-    <string name="dinner2">Dinner</string>
-    <string name="launch1">Launch</string>
-    <string name="launch2">Launch</string>
+    <string name="dinner">Dinner</string>
+    <string name="lunch">Lunch</string>
+    <string name="date">Date</string>
+
 
 </resources>

@@ -18,12 +18,16 @@ package com.example.android.myargmenuplanner;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.myargmenuplanner.data.FoodContract;
+
+import static android.R.attr.id;
 
 
 /**
@@ -49,37 +53,46 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
     public class MenuAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public final TextView mDayView;
-        public final TextView mLaunch1View;
-        public final TextView mLaunch2View;
-        public final TextView mDinner1View;
-        public final TextView mDinner2View;
+        public final TextView mLunchView;
+        public final TextView mDinnerView;
 
         public MenuAdapterViewHolder(View view) {
             super(view);
             mDayView = (TextView) view.findViewById(R.id.tv_day);
-            mLaunch1View = (TextView) view.findViewById(R.id.tv_launch_1);
-            mLaunch2View = (TextView) view.findViewById(R.id.tv_launch_2);
-            mDinner1View = (TextView) view.findViewById(R.id.tv_dinner_1);
-            mDinner2View = (TextView) view.findViewById(R.id.tv_dinner_2);
+            mLunchView = (TextView) view.findViewById(R.id.tv_lunch);
+            mDinnerView = (TextView) view.findViewById(R.id.tv_dinner);
 
-            view.setOnClickListener(this);
+            mLunchView.setOnClickListener(this);
+            mDinnerView.setOnClickListener(this);
+            //view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
+            int columnIndex=0;
+            Log.i("onClick : ","id:"+v.getId());
+            if(v.getId() == mLunchView.getId()){
+                Log.i("onClick mLunchView: ","id:"+mLunchView.getId());
+                columnIndex = mCursor.getColumnIndex(FoodContract.MenuEntry.COLUMN_LUNCH);
+                mClickHandler.onClick(mCursor.getString(columnIndex), this);
+            }
+            if(v.getId() == mDinnerView.getId()){
+                Log.i("onClick mDinnerView: ","id:"+mDinnerView.getId());
+                columnIndex = mCursor.getColumnIndex(FoodContract.MenuEntry.COLUMN_DINNER);
+                mClickHandler.onClick(mCursor.getString(columnIndex), this);
+            }
 
-//            int columnIndex = mCursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_ID);
-//            mClickHandler.onClick(mCursor.getLong(columnIndex), this);
-
-
+            //Log.i("Dentro de MenuAdapter: ","Click on View: "+columnIndex+ "mCursor.getLong: "+mCursor.getLong(columnIndex));
+            Toast.makeText(mContext,"Click on: "+mCursor.getString(columnIndex)+", date: "+mCursor.getString(1)
+                    , Toast.LENGTH_SHORT).show();
 
         }
     }
 
     public static interface MenuAdapterOnClickHandler {
-        void onClick(Long id, MenuAdapterViewHolder vh);
+        void onClick(String id, MenuAdapterViewHolder vh);
     }
 
     public MenuAdapter(Context context, MenuAdapterOnClickHandler dh) {
@@ -103,13 +116,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
 
         mCursor.moveToPosition(position);
 
-//        // Read date from cursor
-//        String title = mCursor.getString(FoodsFragment.COL_TITLE);
-//        String description = mCursor.getString(FoodsFragment.COL_DESCRIPTION);
-//
-//
-//        viewHolder.mTitleView.setText(title);
-//        viewHolder.mDescriptionView.setText(description);
+        // Read date from cursor
+        String date = mCursor.getString(TabFragmentTW.COL_DATE);
+        String lunch = mCursor.getString(TabFragmentTW.COL_LUNCH);
+        String dinner = mCursor.getString(TabFragmentTW.COL_DINNER);
+
+        viewHolder.mDayView.setText(date);
+        viewHolder.mLunchView.setText(lunch);
+        viewHolder.mDinnerView.setText(dinner);
 
     }
 
@@ -130,4 +144,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
         return mCursor;
     }
 
+    public void selectView(RecyclerView.ViewHolder viewHolder) {
+        if ( viewHolder instanceof MenuAdapter.MenuAdapterViewHolder) {
+            MenuAdapter.MenuAdapterViewHolder vfh = (MenuAdapter.MenuAdapterViewHolder)viewHolder;
+            vfh.onClick(vfh.itemView);
+        }
+    }
 }

@@ -30,10 +30,10 @@ public class FoodProvider extends ContentProvider {
 
     static final int FOOD = 100;
     static final int FOOD_WITH_ID = 101;
-
     static final int INGR = 200;
     static final int INGR_WITH_ID = 201;
-
+    static final int MENU = 300;
+    static final int MENU_BTW_DATE = 301;
 
     static UriMatcher buildUriMatcher() {
 
@@ -44,6 +44,8 @@ public class FoodProvider extends ContentProvider {
         matcher.addURI(authority, FoodContract.PATH_FOOD + "/*", FOOD_WITH_ID);
         matcher.addURI(authority, FoodContract.PATH_INGR, INGR);
         matcher.addURI(authority, FoodContract.PATH_INGR + "/*", INGR_WITH_ID);
+        matcher.addURI(authority, FoodContract.PATH_MENU, MENU);
+        matcher.addURI(authority, FoodContract.PATH_MENU + "/*", MENU_BTW_DATE);
 
         return matcher;
 
@@ -108,6 +110,25 @@ public class FoodProvider extends ContentProvider {
         );
     }
 
+
+    private static final String sMenuByDate = FoodContract.MenuEntry.COLUMN_DATE + " BETWEEN ? AND ?";
+
+    private Cursor getMenuByDate(Uri uri, String[] projection, String[] arg, String sortOrder) {
+
+        //String foodId = FoodContract.MenuEntry.getMenuIDbyUri(uri);
+
+        return mOpenHelper.getReadableDatabase().query(
+                FoodContract.MenuEntry.TABLE_NAME,                      //tabla
+                projection,                                             // columnas a mostrar
+                sMenuByDate,                                          // condicion WHERE
+                arg,                               // arg del WHERE
+                null,
+                null,
+                sortOrder
+        );
+    }
+
+
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
                         String sortOrder) {
@@ -141,6 +162,27 @@ public class FoodProvider extends ContentProvider {
                 break;
             }
 
+            // 'menu'
+            case MENU: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        FoodContract.MenuEntry.TABLE_NAME,      // tabla
+                        projection,                             // columnas a mostrar
+                        selection,                              // condicion del query
+                        selectionArgs,                          // argumentos de la condicion
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+
+
+            case MENU_BTW_DATE: {
+                retCursor = getMenuByDate(uri, projection, selectionArgs, sortOrder);
+                break;
+            }
+
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -159,6 +201,16 @@ public class FoodProvider extends ContentProvider {
             case FOOD: {
 
                 long _id = db.insert(FoodContract.FoodEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = FoodContract.FoodEntry.buildFoodUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+
+            case MENU: {
+
+                long _id = db.insert(FoodContract.MenuEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
                     returnUri = FoodContract.FoodEntry.buildFoodUri(_id);
                 else
@@ -195,7 +247,10 @@ public class FoodProvider extends ContentProvider {
                 rowsDeleted = db.delete(
                         FoodContract.IngrEntry.TABLE_NAME, selection, selectionArgs);
                 break;
-
+            case MENU:
+                rowsDeleted = db.delete(
+                        FoodContract.MenuEntry.TABLE_NAME, selection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -266,6 +321,24 @@ public class FoodProvider extends ContentProvider {
                     for (ContentValues value : values) {
 
                         long _id = db.insert(FoodContract.IngrEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            returnCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return returnCount;
+
+            case MENU:
+                db.beginTransaction();
+                returnCount = 0;
+                try {
+                    for (ContentValues value : values) {
+
+                        long _id = db.insert(FoodContract.MenuEntry.TABLE_NAME, null, value);
                         if (_id != -1) {
                             returnCount++;
                         }

@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.android.myargmenuplanner.data.FetchJsonDataTask;
+import com.example.android.myargmenuplanner.data.LoadMenu;
 
 public class MainActivity extends AppCompatActivity implements FoodsFragment.Callback{
 
@@ -95,6 +96,11 @@ public class MainActivity extends AppCompatActivity implements FoodsFragment.Cal
 
         mDrawerToggle.syncState();
 
+
+        FetchJsonDataTask fetch = new FetchJsonDataTask(this);
+        fetch.execute();
+        LoadMenu menu = new LoadMenu(this);
+        menu.execute();
 
 
 

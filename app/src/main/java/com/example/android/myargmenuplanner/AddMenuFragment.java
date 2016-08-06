@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.R.id.list;
+import static com.example.android.myargmenuplanner.R.id.spinner_dinner;
+import static com.example.android.myargmenuplanner.R.id.spinner_lunch;
 
 
 /**
@@ -32,10 +34,8 @@ import static android.R.id.list;
  */
 public class AddMenuFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private Spinner spinner_l1;
-    private Spinner spinner_l2;
-    private Spinner spinner_d1;
-    private Spinner spinner_d2;
+    private Spinner spinner_lunch;
+    private Spinner spinner_dinner;
 
     private Button btnSubmit;
     private static final int DETAIL_LOADER = 0;
@@ -73,10 +73,8 @@ public class AddMenuFragment extends Fragment implements LoaderManager.LoaderCal
         View myView =  inflater.inflate(R.layout.fragment_add_menu, container, false);
 
         mContext = getActivity();
-        spinner_l1 = (Spinner) myView.findViewById(R.id.spinner_l1);
-        spinner_l2 = (Spinner) myView.findViewById(R.id.spinner_l2);
-        spinner_d1 = (Spinner) myView.findViewById(R.id.spinner_d1);
-        spinner_d2 = (Spinner) myView.findViewById(R.id.spinner_d2);
+        spinner_lunch = (Spinner) myView.findViewById(R.id.spinner_lunch);
+        spinner_dinner = (Spinner) myView.findViewById(R.id.spinner_dinner);
 
         btnSubmit = (Button) myView.findViewById(R.id.btnSubmit);
 
@@ -97,10 +95,8 @@ public class AddMenuFragment extends Fragment implements LoaderManager.LoaderCal
 
                 Toast.makeText(mContext,
                         "OnClickListener : " +
-                                "\nSpinner 1 : "+ String.valueOf(spinner_l1.getSelectedItem())+
-                                "\nSpinner 2 : "+ String.valueOf(spinner_l2.getSelectedItem())+
-                                "\nSpinner 3 : "+ String.valueOf(spinner_d1.getSelectedItem())+
-                                "\nSpinner 4 : "+ String.valueOf(spinner_d2.getSelectedItem()),
+                                "\nSpinner 1 : "+ String.valueOf(spinner_lunch.getSelectedItem())+
+                                "\nSpinner 2 : "+ String.valueOf(spinner_dinner.getSelectedItem()),
                         Toast.LENGTH_SHORT).show();
             }
 
@@ -167,10 +163,8 @@ public class AddMenuFragment extends Fragment implements LoaderManager.LoaderCal
                 data.moveToNext();
             }
 
-            spinner_l1.setAdapter(mDataAdapter);
-            spinner_l2.setAdapter(mDataAdapter);
-            spinner_d1.setAdapter(mDataAdapter);
-            spinner_d2.setAdapter(mDataAdapter);
+            spinner_lunch.setAdapter(mDataAdapter);
+            spinner_dinner.setAdapter(mDataAdapter);
 
         }
     }

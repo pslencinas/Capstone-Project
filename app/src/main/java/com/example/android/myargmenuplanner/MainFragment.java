@@ -24,6 +24,7 @@ import android.widget.ListView;
 import com.example.android.myargmenuplanner.data.FetchJsonDataTask;
 import com.example.android.myargmenuplanner.data.FoodContract;
 
+import static android.R.attr.id;
 import static com.example.android.myargmenuplanner.FoodsFragment.COL_ID;
 import static com.example.android.myargmenuplanner.R.id.toolbar;
 
@@ -78,15 +79,15 @@ public class MainFragment extends Fragment{
         mRecView = (RecyclerView) rootView.findViewById(R.id.recyclerview_menu);
         mRecView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mMenuAdapter = new MenuAdapter(getActivity(), new MenuAdapter.MenuAdapterOnClickHandler() {
-            @Override
-            public void onClick(Long id, MenuAdapter.MenuAdapterViewHolder vh) {
-
-                ((MainFragment.Callback) getActivity())
-                        .onItemSelected(FoodContract.FoodEntry.buildFoodUri(id)
-                                ,FoodContract.IngrEntry.buildIngrByFoodUri(id), vh );
-            }
-        });
+//        mMenuAdapter = new MenuAdapter(getActivity(), new MenuAdapter.MenuAdapterOnClickHandler() {
+//            @Override
+//            public void onClick(String id, MenuAdapter.MenuAdapterViewHolder vh) {
+//
+//                ((MainFragment.Callback) getActivity())
+//                        .onItemSelected(FoodContract.FoodEntry.buildFoodUri(id)
+//                                ,FoodContract.IngrEntry.buildIngrByFoodUri(id), vh );
+//            }
+//        });
 
 
         mRecView.setAdapter(mMenuAdapter);

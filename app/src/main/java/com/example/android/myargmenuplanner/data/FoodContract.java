@@ -20,12 +20,15 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import static android.R.attr.id;
+
 public class FoodContract {
 
 
     public static final String CONTENT_AUTHORITY = "com.example.android.myargmenuplanner";
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+            //  content://com.example.android.myargmenuplanner
 
     public static final String PATH_FOOD = "foods";
     public static final String PATH_INGR = "ingredients";
@@ -35,6 +38,7 @@ public class FoodContract {
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_FOOD).build();
+                //  content://com.example.android.myargmenuplanner/foods
 
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FOOD;
@@ -64,6 +68,7 @@ public class FoodContract {
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_INGR).build();
+        //  content://com.example.android.myargmenuplanner/ingr
 
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INGR;
@@ -92,6 +97,7 @@ public class FoodContract {
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_MENU).build();
+        //  CONTENT_URI = content://com.example.android.myargmenuplanner/menu
 
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_MENU;
@@ -99,16 +105,15 @@ public class FoodContract {
 
         // Table name
         public static final String TABLE_NAME = "menu";
-        public static final String COLUMN_ID_MENU = "id_menu";
         public static final String COLUMN_DATE = "date";
-        public static final String COLUMN_LAUNCH1 = "launch1";
-        public static final String COLUMN_LAUNCH2 = "launch2";
-        public static final String COLUMN_DINNER1 = "dinner1";
-        public static final String COLUMN_DINNER2 = "dinner2";
+        public static final String COLUMN_LUNCH = "lunch";
+        public static final String COLUMN_DINNER = "dinner";
+        public static final String COLUMN_WEEK = "week";
 
-        // content://CONTENT_AUTHORITY/foods
-        public static Uri buildMenuByFoodUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
+        // content://CONTENT_AUTHORITY/menu
+        public static Uri buildMenuByWeekUri(String week) {
+
+            return CONTENT_URI.buildUpon().appendPath(week).build();
         }
 
         public static String getMenuIDbyUri(Uri uri) {
