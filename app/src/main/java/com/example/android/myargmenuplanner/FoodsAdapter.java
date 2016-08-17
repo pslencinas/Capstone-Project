@@ -18,18 +18,24 @@ package com.example.android.myargmenuplanner;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.myargmenuplanner.data.FoodContract;
 
 import static android.R.attr.choiceMode;
+import static android.os.Build.VERSION_CODES.M;
 
 
 /**
@@ -38,31 +44,37 @@ import static android.R.attr.choiceMode;
  */
 public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodsAdapterViewHolder> {
 
+
     private static final int VIEW_TYPE_TODAY = 0;
     private static final int VIEW_TYPE_FUTURE_DAY = 1;
+    private static String FOOD_ADAPTER = "FOOD_LIST";
 
     // Flag to determine if we want to use a separate view for "today".
     private boolean mUseTodayLayout = true;
     final private FoodsAdapterOnClickHandler mClickHandler;
     private Cursor mCursor;
     final private Context mContext;
-
-
-
+    public int count = 0;
+    public int mPosition = 0;
+    public int LastPosition = 0;
     /**
      * Cache of the children views for a forecast list item.
      */
     public class FoodsAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+
         public final TextView mTitleView;
-        public final TextView mDescriptionView;
 
         public FoodsAdapterViewHolder(View view) {
+
             super(view);
+
+
             mTitleView = (TextView) view.findViewById(R.id.list_item_title);
-            mDescriptionView = (TextView) view.findViewById(R.id.list_item_description);
+
 
             view.setOnClickListener(this);
+
         }
 
         @Override
@@ -91,24 +103,23 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodsAdapter
     @Override
     public FoodsAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
+
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_foods, viewGroup, false);
         view.setFocusable(true);
-        return new FoodsAdapterViewHolder(view);
 
+        return new FoodsAdapterViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(FoodsAdapterViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final FoodsAdapterViewHolder viewHolder, int position) {
+
 
         mCursor.moveToPosition(position);
 
-        // Read date from cursor
         String title = mCursor.getString(FoodsFragment.COL_TITLE);
-        String description = mCursor.getString(FoodsFragment.COL_DESCRIPTION);
-
 
         viewHolder.mTitleView.setText(title);
-        viewHolder.mDescriptionView.setText(description);
+
 
     }
 

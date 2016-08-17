@@ -51,7 +51,7 @@ public class FoodContract {
         public static final String COLUMN_IMAGE_ID = "image_id";
         public static final String COLUMN_DESCRIPTION = "description";
 
-        // content://CONTENT_AUTHORITY/foods
+        // content://CONTENT_AUTHORITY/foods/id
         public static Uri buildFoodUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
@@ -105,10 +105,13 @@ public class FoodContract {
 
         // Table name
         public static final String TABLE_NAME = "menu";
+
         public static final String COLUMN_DATE = "date";
         public static final String COLUMN_LUNCH = "lunch";
+        public static final String COLUMN_ID_LUNCH = "id_lunch";
         public static final String COLUMN_DINNER = "dinner";
-        public static final String COLUMN_WEEK = "week";
+        public static final String COLUMN_ID_DINNER = "id_dinner";
+
 
         // content://CONTENT_AUTHORITY/menu
         public static Uri buildMenuByWeekUri(String week) {

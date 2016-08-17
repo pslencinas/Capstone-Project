@@ -37,8 +37,9 @@ public class TabFragmentTW extends Fragment implements LoaderManager.LoaderCallb
     static final String DETAIL_URI = "URI";
     private Uri mUri;
 
-    private String initDate, endDate;
+    public static String initDate, endDate;
     private MenuAdapter mMenuAdapter;
+    private FoodsAdapter mFoodsAdapter;
     private RecyclerView mRecyclerView;
     private static final int DETAIL_LOADER = 0;
 
@@ -48,8 +49,8 @@ public class TabFragmentTW extends Fragment implements LoaderManager.LoaderCallb
 
             MenuEntry.COLUMN_DATE,
             MenuEntry.COLUMN_LUNCH,
-            MenuEntry.COLUMN_DINNER,
-            MenuEntry.COLUMN_WEEK
+            MenuEntry.COLUMN_DINNER
+
 
     };
 
@@ -66,7 +67,7 @@ public class TabFragmentTW extends Fragment implements LoaderManager.LoaderCallb
         /**
          * DetailFragmentCallback for when an item has been selected.
          */
-        public void onItemSelected(Uri foodUri, Uri menuUri, MenuAdapter.MenuAdapterViewHolder vh);
+        public void onItemSelectedMenu(String type, String id, String date, MenuAdapter.MenuAdapterViewHolder vh);
     }
 
 
@@ -86,16 +87,19 @@ public class TabFragmentTW extends Fragment implements LoaderManager.LoaderCallb
 
         mMenuAdapter = new MenuAdapter(getActivity(), new MenuAdapter.MenuAdapterOnClickHandler() {
             @Override
-            public void onClick(String id, MenuAdapter.MenuAdapterViewHolder vh) {
+            public void onClick(String type, String id, String date, MenuAdapter.MenuAdapterViewHolder vh) {
 
-//                ((TabFragmentTW.Callback) getActivity())
-//                        .onItemSelected(FoodContract.FoodEntry.buildFoodUri(id)
-//                                ,FoodContract.IngrEntry.buildIngrByFoodUri(id), vh );
+                Log.i(LOG_TAG, "ClickOn TabFragmentTW");
+
+                ((TabFragmentTW.Callback) getActivity())
+                        .onItemSelectedMenu(type, id, date, vh );
 
                 //Toast.makeText(getActivity(),"Click on: "+id, Toast.LENGTH_SHORT).show();
             }
         });
-        // specify an adapter (see also next example)
+
+
+
         mRecyclerView.setAdapter(mMenuAdapter);
 
         return rootView;
@@ -136,7 +140,7 @@ public class TabFragmentTW extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        Log.i(LOG_TAG, "Dentro de onCreateLoader");
+//        Log.i(LOG_TAG, "Dentro de onCreateLoader");
 
         mUri = MenuEntry.CONTENT_URI;
         String sMenuByDate = FoodContract.MenuEntry.COLUMN_DATE + " BETWEEN ? AND ?";

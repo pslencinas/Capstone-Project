@@ -4,49 +4,56 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
-
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_margin="8dp">
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/list_item_extra_padding"
+        android:paddingRight="@dimen/list_item_extra_padding"
+        android:orientation="vertical">
 
-
-        <TextView
-            android:id="@+id/tv_day"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:textSize="14sp"
-            android:text="@string/text_day1"
-            android:paddingBottom="5dp"/>
-
-
-
-        <TextView
-            android:id="@+id/tv_lunch"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:textSize="14sp"
-            android:text="@string/text_empty"
-            android:paddingBottom="5dp"/>
-
-
-        <TextView
-            android:id="@+id/tv_dinner"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:textSize="14sp"
-            android:text="@string/text_empty"
-            android:paddingBottom="5dp"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingBottom="10dp" android:paddingTop="10dp">
 
 
+                <TextView
+                    android:id="@+id/tv_day"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="18sp"
+                    android:text="@string/text_day1"
+                    android:paddingBottom="5dp"/>
+
+                <TextView
+                    android:id="@+id/tv_lunch"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="18sp"
+                    android:text="@string/text_empty"
+                    android:paddingBottom="5dp" android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:id="@+id/tv_dinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textSize="18sp"
+                    android:text="@string/text_empty"
+                    android:paddingBottom="5dp" android:gravity="center_horizontal"/>
+
+        </LinearLayout>
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
 
     </LinearLayout>
 </FrameLayout>

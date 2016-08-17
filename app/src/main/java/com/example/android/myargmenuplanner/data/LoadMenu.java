@@ -56,8 +56,8 @@ public class LoadMenu extends AsyncTask<String, Void, String[]> {
     private static final String[] MENU_COLUMNS = {
 
             MenuEntry.TABLE_NAME + "." + MenuEntry._ID,
-            MenuEntry.COLUMN_DATE,
-            MenuEntry.COLUMN_WEEK
+            MenuEntry.COLUMN_DATE
+
     };
 
     public LoadMenu(Context context) {
@@ -101,8 +101,9 @@ public class LoadMenu extends AsyncTask<String, Void, String[]> {
 
                 values.put(MenuEntry.COLUMN_DATE, sDate);
                 values.put(MenuEntry.COLUMN_LUNCH, "Empty");
+                values.put(MenuEntry.COLUMN_ID_LUNCH, 0);
                 values.put(MenuEntry.COLUMN_DINNER, "Empty");
-                values.put(MenuEntry.COLUMN_WEEK, sWeek);
+                values.put(MenuEntry.COLUMN_ID_DINNER, 0);
 
                 cVVector.add(values);
 

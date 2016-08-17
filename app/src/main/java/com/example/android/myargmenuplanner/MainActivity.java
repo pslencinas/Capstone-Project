@@ -2,6 +2,7 @@ package com.example.android.myargmenuplanner;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -27,9 +28,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.android.myargmenuplanner.data.FetchJsonDataTask;
+import com.example.android.myargmenuplanner.data.FoodContract;
 import com.example.android.myargmenuplanner.data.LoadMenu;
 
-public class MainActivity extends AppCompatActivity implements FoodsFragment.Callback{
+import static android.R.attr.id;
+import static android.R.attr.name;
+
+public class MainActivity extends AppCompatActivity implements TabFragmentTW.Callback{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private boolean mTwoPane=false;
@@ -68,15 +73,21 @@ public class MainActivity extends AppCompatActivity implements FoodsFragment.Cal
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 mDrawerLayout.closeDrawers();
 
+                if (menuItem.getItemId() == R.id.nav_ingredients) {
 
-
-                if (menuItem.getItemId() == R.id.nav_foods) {
-                    Log.i(LOG_TAG, "Click on Foods");
-                    FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.containerView,new FoodsFragment()).commit();
-
+                    Intent intent = new Intent(MainActivity.this, IngredientsActivity.class);
+                    startActivity(intent);
 
                 }
+
+                if (menuItem.getItemId() == R.id.nav_foods) {
+
+                    Intent intent = new Intent(MainActivity.this, FoodsActivity.class);
+                    startActivity(intent);
+
+                }
+
+
 
 
                 return false;
@@ -105,6 +116,20 @@ public class MainActivity extends AppCompatActivity implements FoodsFragment.Cal
 
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String result=data.getStringExtra("result");
+                Log.i(LOG_TAG, "Dentro de MainActivity: Result= "+result);
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }//onActivityResult
 
 
     @Override
@@ -138,8 +163,10 @@ public class MainActivity extends AppCompatActivity implements FoodsFragment.Cal
 
         return super.onOptionsItemSelected(item);
     }
+
+
     @Override
-    public void onItemSelected(Uri contentUriFood, Uri contentUriIngr, FoodsAdapter.FoodsAdapterViewHolder vh) {
+    public void onItemSelectedMenu(String type_of_meal, String meal, String date, MenuAdapter.MenuAdapterViewHolder vh) {
         if (mTwoPane) {
 
 //            Bundle args = new Bundle();
@@ -153,12 +180,43 @@ public class MainActivity extends AppCompatActivity implements FoodsFragment.Cal
 //                    .commit();
         } else {
             //Intent intent = new Intent(this, DetailFoodActivity.class).setData(contentUri);
-            Intent intent = new Intent(this, DetailFoodActivity.class);
-            Bundle extras = new Bundle();
-            extras.putString("URI_FOOD", contentUriFood.toString());
-            extras.putString("URI_INGR", contentUriIngr.toString());
-            intent.putExtras(extras);
-            startActivity(intent);
+
+
+
+            if(meal.equals("Empty")){
+                Intent intent = new Intent(this, FoodsActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString("TYPE", type_of_meal);
+                extras.putString("DATE", date);
+                intent.putExtras(extras);
+                startActivityForResult(intent, 1);
+                //startActivity(intent);
+
+                Log.i(LOG_TAG, "Dentro de onItemSelectedMenu - id=Empty");
+            }else{
+                long id=0;
+                String mSelection = FoodContract.FoodEntry.COLUMN_TITLE +  " = ?";  //WHERE
+                String[] mSelArgs = {meal};                                         // parametros del WHERE
+                String[] mProj = {FoodContract.FoodEntry.COLUMN_ID};                //Columnas a mostrar
+
+                Cursor mCursor = this.getContentResolver().
+                        query(FoodContract.FoodEntry.CONTENT_URI,mProj , mSelection, mSelArgs,null);
+
+                mCursor.moveToFirst();
+                int nameColumnIndex = mCursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_ID);
+                id = mCursor.getLong(nameColumnIndex);
+
+                Intent intent = new Intent(this, DetailFoodActivity.class);
+                Bundle extras = new Bundle();
+                extras.putString("URI_FOOD", FoodContract.FoodEntry.buildFoodUri(id).toString());
+                extras.putString("URI_INGR", FoodContract.IngrEntry.buildIngrByFoodUri(id).toString());
+                extras.putString("FROM_MENU", "YES");
+                extras.putString("DATE", date);
+                extras.putString("TYPE_OF_MEAL", type_of_meal);
+                intent.putExtras(extras);
+                startActivity(intent);
+            }
+
             //Toast.makeText(this,"Click on: "+contentUri.toString(), Toast.LENGTH_SHORT).show();
 
         }

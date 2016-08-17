@@ -25,7 +25,7 @@ import com.example.android.myargmenuplanner.data.FoodContract.MenuEntry;
 
 public class FoodDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 9;
 
     static final String DATABASE_NAME = "menuplanner.db";
 
@@ -60,9 +60,10 @@ public class FoodDbHelper extends SQLiteOpenHelper {
 
                 MenuEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 MenuEntry.COLUMN_DATE + " DATE NOT NULL, " +
-                MenuEntry.COLUMN_LUNCH + " INTEGER NOT NULL, " +
-                MenuEntry.COLUMN_DINNER + " INTEGER NOT NULL, " +
-                MenuEntry.COLUMN_WEEK + " TEXT NOT NULL " +
+                MenuEntry.COLUMN_LUNCH + " TEXT NOT NULL, " +
+                MenuEntry.COLUMN_ID_LUNCH + " INTEGER NOT NULL, " +
+                MenuEntry.COLUMN_DINNER + " TEXT NOT NULL, " +
+                MenuEntry.COLUMN_ID_DINNER + " INTEGER NOT NULL " +
 
                 ");";
 

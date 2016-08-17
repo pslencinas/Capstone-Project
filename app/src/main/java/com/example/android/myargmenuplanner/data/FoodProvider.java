@@ -156,6 +156,21 @@ public class FoodProvider extends ContentProvider {
                 retCursor = getFoodById(uri, projection, sortOrder);
                 break;
             }
+
+            // 'ingr'
+            case INGR: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        FoodContract.IngrEntry.TABLE_NAME,      // tabla
+                        projection,                             // columnas a mostrar
+                        selection,                              // condicion del query
+                        selectionArgs,                          // argumentos de la condicion
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            }
+
             // "ingredients/*"
             case INGR_WITH_ID: {
                 retCursor = getIngrByFoodId(uri, projection, sortOrder);
@@ -278,6 +293,10 @@ public class FoodProvider extends ContentProvider {
                 break;
             case FOOD_WITH_ID:
                 rowsUpdated = db.update(FoodContract.FoodEntry.TABLE_NAME, values, selection,
+                        selectionArgs);
+                break;
+            case MENU:
+                rowsUpdated = db.update(FoodContract.MenuEntry.TABLE_NAME, values, selection,
                         selectionArgs);
                 break;
             default:

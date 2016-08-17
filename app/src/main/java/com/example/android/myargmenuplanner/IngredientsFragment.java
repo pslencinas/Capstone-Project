@@ -24,14 +24,14 @@ import com.squareup.picasso.Picasso;
 
 
 
-public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class IngredientsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String LOG_TAG = FoodsFragment.class.getSimpleName();
     static final String DETAIL_URI = "URI";
     static String TYPE_OF_MEAL;
     static String DATE_OF_MEAL;
 
-    private FoodsAdapter mFoodsAdapter;
+    private IngrWeekAdapter mIngrWeekAdapter;
     private RecyclerView mRecyclerView;
 
     private ShareActionProvider mShareActionProvider;
@@ -51,9 +51,36 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
 
     };
 
-    static final int COL_ID = 1;
-    static final int COL_TITLE = 2;
-    static final int COL_IMG_ID = 3;
+    private static final String[] INGR_COLUMNS = {
+
+            FoodContract.IngrEntry.TABLE_NAME + "." + FoodContract.IngrEntry._ID,
+
+            FoodContract.IngrEntry.COLUMN_ID_FOOD,
+            FoodContract.IngrEntry.COLUMN_NAME,
+            FoodContract.IngrEntry.COLUMN_QTY,
+            FoodContract.IngrEntry.COLUMN_UNIT
+
+    };
+
+    private static final String[] MENU_COLUMNS = {
+
+            FoodContract.MenuEntry.TABLE_NAME + "." + FoodContract.MenuEntry._ID,
+
+            FoodContract.MenuEntry.COLUMN_DATE,
+            FoodContract.MenuEntry.COLUMN_ID_LUNCH,
+            FoodContract.MenuEntry.COLUMN_ID_DINNER
+
+
+    };
+
+    static final int COL_DATE = 1;
+    static final int COL_ID_LUNCH = 2;
+    static final int COL_ID_DINNER = 3;
+
+    public static final int COL_NAME = 2;
+    public static final int COL_QTY = 3;
+    public static final int COL_UNIT = 4;
+
 
 
     private ImageView mImageView;
@@ -67,15 +94,8 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
     public static String food_id;
     public static String image_id;
 
-    public FoodsFragment() {
+    public IngredientsFragment() {
         setHasOptionsMenu(true);
-    }
-
-    public interface Callback {
-        /**
-         * DetailFragmentCallback for when an item has been selected.
-         */
-        public void onItemSelected(String type, String mDate, Uri foodUri, Uri ingrUri, FoodsAdapter.FoodsAdapterViewHolder vh);
     }
 
 
@@ -93,31 +113,17 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
 
         }
 
-        Log.i(LOG_TAG, "Dentro de onCreateView: TYPE_OF_MEAL: "+TYPE_OF_MEAL);
 
-        View rootView = inflater.inflate(R.layout.fragment_food_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_ingr_list, container, false);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_food);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_ingr);
         // Set the layout manager
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mFoodsAdapter = new FoodsAdapter(getActivity(), new FoodsAdapter.FoodsAdapterOnClickHandler() {
-            @Override
-            public void onClick(Long id, FoodsAdapter.FoodsAdapterViewHolder vh) {
-
-
-                ((Callback) getActivity())
-                        .onItemSelected(TYPE_OF_MEAL, DATE_OF_MEAL
-                                ,FoodContract.FoodEntry.buildFoodUri(id)
-                                ,FoodContract.IngrEntry.buildIngrByFoodUri(id), vh );
-            }
-        });
-
-
-
+        mIngrWeekAdapter = new IngrWeekAdapter();
 
         // specify an adapter (see also next example)
-        mRecyclerView.setAdapter(mFoodsAdapter);
+        mRecyclerView.setAdapter(mIngrWeekAdapter);
 
         return rootView;
     }
@@ -126,6 +132,24 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+
+
+        Uri mUri = FoodContract.MenuEntry.CONTENT_URI;
+        String sMenuByDate = FoodContract.MenuEntry.COLUMN_DATE + " BETWEEN ? AND ?";
+
+        Cursor mCursor= getActivity().getContentResolver().query(
+                mUri,
+                MENU_COLUMNS,                           //Columnas a mostrar
+                sMenuByDate,                           // selection = Condicion del WHERE
+                new String []{TabFragmentTW.initDate, TabFragmentTW.endDate},        // selectionArgs = arg del WHERE
+                null
+        );
+
+        while(mCursor.moveToNext()){
+            Log.i(LOG_TAG, "ID_LUNCH: "+mCursor.getShort(COL_ID_LUNCH));
+            Log.i(LOG_TAG, "ID_DINNER: "+mCursor.getShort(COL_ID_DINNER));
+
+        }
 
 
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
@@ -143,12 +167,12 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
 
-        mUri = FoodContract.FoodEntry.CONTENT_URI;
+        mUri = FoodContract.IngrEntry.CONTENT_URI;
 
         return new CursorLoader(
                 getActivity(),
                 mUri,
-                FOOD_COLUMNS,
+                INGR_COLUMNS,
                 null,
                 null,
                 null
@@ -163,7 +187,7 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
 
         if (data != null) {
 
-            mFoodsAdapter.swapCursor(data);
+            mIngrWeekAdapter.swapCursor(data);
 
 
         }

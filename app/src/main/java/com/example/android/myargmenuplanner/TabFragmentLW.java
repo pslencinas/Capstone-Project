@@ -23,6 +23,10 @@ import android.widget.Toast;
 import com.example.android.myargmenuplanner.data.FoodContract;
 import com.example.android.myargmenuplanner.data.FoodContract.MenuEntry;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import static android.R.attr.id;
 
 public class TabFragmentLW extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -30,7 +34,8 @@ public class TabFragmentLW extends Fragment implements LoaderManager.LoaderCallb
     private static final String LOG_TAG = TabFragmentTW.class.getSimpleName();
     static final String DETAIL_URI = "URI";
     private Uri mUri;
-
+    private String initDate, endDate;
+    static final String FOOD_ADAPTER = "FOOD_ADD";
     private MenuAdapter mMenuAdapter;
     private RecyclerView mRecyclerView;
     private static final int DETAIL_LOADER = 0;
@@ -41,8 +46,8 @@ public class TabFragmentLW extends Fragment implements LoaderManager.LoaderCallb
 
             MenuEntry.COLUMN_DATE,
             MenuEntry.COLUMN_LUNCH,
-            MenuEntry.COLUMN_DINNER,
-            MenuEntry.COLUMN_WEEK,
+            MenuEntry.COLUMN_DINNER
+
 
     };
 
@@ -79,7 +84,7 @@ public class TabFragmentLW extends Fragment implements LoaderManager.LoaderCallb
 
         mMenuAdapter = new MenuAdapter(getActivity(), new MenuAdapter.MenuAdapterOnClickHandler() {
             @Override
-            public void onClick(String id, MenuAdapter.MenuAdapterViewHolder vh) {
+            public void onClick(String type,String id, String date, MenuAdapter.MenuAdapterViewHolder vh) {
 
 //                ((TabFragmentTW.Callback) getActivity())
 //                        .onItemSelected(FoodContract.FoodEntry.buildFoodUri(id)
@@ -98,6 +103,16 @@ public class TabFragmentLW extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+
+        int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
+
+        int shift = dayofweek;
+        cal.add(Calendar.DATE, -shift);
+        endDate = df.format(cal.getTime());
+        cal.add(Calendar.DATE, -6);
+        initDate = df.format(cal.getTime());
 
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
@@ -106,18 +121,17 @@ public class TabFragmentLW extends Fragment implements LoaderManager.LoaderCallb
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        Log.i(LOG_TAG, "Dentro de onCreateLoader");
-
-        mUri = MenuEntry.buildMenuByWeekUri("lastweek");
+        mUri = MenuEntry.CONTENT_URI;
+        String sMenuByDate = FoodContract.MenuEntry.COLUMN_DATE + " BETWEEN ? AND ?";
 
         Log.i(LOG_TAG, "mURI: "+mUri);
 
         return new CursorLoader(
                 getActivity(),
-                mUri,
-                MENU_COLUMNS,
-                null,
-                null,
+                mUri,                                   // URI
+                MENU_COLUMNS,                           // projection = Columnas a mostrar
+                sMenuByDate,                           // selection = Condicion del WHERE
+                new String []{initDate, endDate},        // selectionArgs = arg del WHERE
                 null
         );
 

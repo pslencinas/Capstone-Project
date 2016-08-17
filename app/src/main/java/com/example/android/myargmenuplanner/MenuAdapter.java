@@ -16,7 +16,9 @@
 package com.example.android.myargmenuplanner;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.myargmenuplanner.data.FoodContract;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import static android.R.attr.id;
 
@@ -71,28 +79,29 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
-            int columnIndex=0;
-            Log.i("onClick : ","id:"+v.getId());
+            int columnLunchIndex=0;
+            int columnDinnerIndex=0;
+            int columnDateIndex=0;
+
+
             if(v.getId() == mLunchView.getId()){
-                Log.i("onClick mLunchView: ","id:"+mLunchView.getId());
-                columnIndex = mCursor.getColumnIndex(FoodContract.MenuEntry.COLUMN_LUNCH);
-                mClickHandler.onClick(mCursor.getString(columnIndex), this);
+                columnLunchIndex = mCursor.getColumnIndex(FoodContract.MenuEntry.COLUMN_LUNCH);
+                columnDateIndex = mCursor.getColumnIndex(FoodContract.MenuEntry.COLUMN_DATE);
+                mClickHandler.onClick("lunch", mCursor.getString(columnLunchIndex), mCursor.getString(columnDateIndex), this);
             }
             if(v.getId() == mDinnerView.getId()){
-                Log.i("onClick mDinnerView: ","id:"+mDinnerView.getId());
-                columnIndex = mCursor.getColumnIndex(FoodContract.MenuEntry.COLUMN_DINNER);
-                mClickHandler.onClick(mCursor.getString(columnIndex), this);
+                columnDinnerIndex = mCursor.getColumnIndex(FoodContract.MenuEntry.COLUMN_DINNER);
+                columnDateIndex = mCursor.getColumnIndex(FoodContract.MenuEntry.COLUMN_DATE);
+                mClickHandler.onClick("dinner", mCursor.getString(columnDinnerIndex), mCursor.getString(columnDateIndex),this);
             }
 
-            //Log.i("Dentro de MenuAdapter: ","Click on View: "+columnIndex+ "mCursor.getLong: "+mCursor.getLong(columnIndex));
-            Toast.makeText(mContext,"Click on: "+mCursor.getString(columnIndex)+", date: "+mCursor.getString(1)
-                    , Toast.LENGTH_SHORT).show();
+
 
         }
     }
 
     public static interface MenuAdapterOnClickHandler {
-        void onClick(String id, MenuAdapterViewHolder vh);
+        void onClick(String type, String id, String date, MenuAdapterViewHolder vh);
     }
 
     public MenuAdapter(Context context, MenuAdapterOnClickHandler dh) {
@@ -121,9 +130,21 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
         String lunch = mCursor.getString(TabFragmentTW.COL_LUNCH);
         String dinner = mCursor.getString(TabFragmentTW.COL_DINNER);
 
-        viewHolder.mDayView.setText(date);
         viewHolder.mLunchView.setText(lunch);
         viewHolder.mDinnerView.setText(dinner);
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateObj = null;
+        try {
+            dateObj = df.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat postFormater = new SimpleDateFormat("EEE dd, MMM");
+        String newDateStr = postFormater.format(dateObj);
+
+        viewHolder.mDayView.setText(newDateStr);
 
     }
 

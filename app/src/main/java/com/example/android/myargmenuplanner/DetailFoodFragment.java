@@ -15,9 +15,12 @@
  */
 package com.example.android.myargmenuplanner;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -55,6 +58,9 @@ public class DetailFoodFragment extends Fragment implements LoaderManager.Loader
     private String mForecast;
     private Uri mUri;
     private Uri mUri_ingr;
+    private String mFromMenu;
+    private String mDate;
+    private String mTypeOfMeal;
     private boolean mTransitionAnimation;
     private IngredientsAdapter mIngrAdapter;
     private RecyclerView mIngrRecyclerView;
@@ -99,6 +105,7 @@ public class DetailFoodFragment extends Fragment implements LoaderManager.Loader
     private TextView mTitleView;
     private TextView mDescriptionView;
     private ListView mListView;
+    private FloatingActionButton mFab;
 
 
     public DetailFoodFragment() {
@@ -114,10 +121,11 @@ public class DetailFoodFragment extends Fragment implements LoaderManager.Loader
             //mUri = arguments.getParcelable(DetailFoodFragment.DETAIL_URI);
             mUri = Uri.parse(arguments.getString("URI_FOOD"));
             mUri_ingr = Uri.parse(arguments.getString("URI_INGR"));
+            mFromMenu = arguments.getString("FROM_MENU");
+            mDate = arguments.getString("DATE");
+            mTypeOfMeal = arguments.getString("TYPE_OF_MEAL");
         }
 
-        Log.i(LOG_TAG, "URI_FOOD: "+ arguments.getString("URI_FOOD"));
-        Log.i(LOG_TAG, "URI_INGR: "+ arguments.getString("URI_INGR"));
 
         View rootView = inflater.inflate(R.layout.fragment_foods_detail, container, false);
 
@@ -125,6 +133,40 @@ public class DetailFoodFragment extends Fragment implements LoaderManager.Loader
         mTitleView = (TextView) rootView.findViewById(R.id.title_text);
         mDescriptionView = (TextView) rootView.findViewById(R.id.description_text);
         mIngrRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_ingr);
+        mFab = (FloatingActionButton) rootView.findViewById(R.id.fab_del);
+
+        if(mFromMenu.equals("NO")) {
+            mFab.setVisibility(View.INVISIBLE);
+        }else{
+            mFab.setVisibility(View.VISIBLE);
+
+            mFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String mSelectionClause = FoodContract.MenuEntry.COLUMN_DATE +  " = ?";
+                    String[] mSelectionArgs = {mDate};
+
+
+                    ContentValues foodValues = new ContentValues();
+
+                    if(mTypeOfMeal.equals("lunch")){
+                        foodValues.put(FoodContract.MenuEntry.COLUMN_LUNCH, "Empty");
+                    }else{
+                        foodValues.put(FoodContract.MenuEntry.COLUMN_DINNER, "Empty");
+                    }
+
+
+                    int rowUpdated = getActivity().getContentResolver().
+                            update(FoodContract.MenuEntry.CONTENT_URI, foodValues, mSelectionClause, mSelectionArgs);
+
+                    getActivity().finish();
+
+                }
+            });
+
+        }
+
         mIngrRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mIngrAdapter = new IngredientsAdapter();

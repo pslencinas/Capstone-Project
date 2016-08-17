@@ -2,6 +2,7 @@ package com.example.android.myargmenuplanner;
 
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -26,6 +27,7 @@ import com.example.android.myargmenuplanner.data.FoodContract.MenuEntry;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Vector;
 
 import static android.R.attr.id;
 
@@ -46,8 +48,7 @@ public class TabFragmentNW extends Fragment implements LoaderManager.LoaderCallb
 
             MenuEntry.COLUMN_DATE,
             MenuEntry.COLUMN_LUNCH,
-            MenuEntry.COLUMN_DINNER,
-            MenuEntry.COLUMN_WEEK,
+            MenuEntry.COLUMN_DINNER
 
     };
 
@@ -84,11 +85,12 @@ public class TabFragmentNW extends Fragment implements LoaderManager.LoaderCallb
 
         mMenuAdapter = new MenuAdapter(getActivity(), new MenuAdapter.MenuAdapterOnClickHandler() {
             @Override
-            public void onClick(String id, MenuAdapter.MenuAdapterViewHolder vh) {
+            public void onClick(String type, String id, String date, MenuAdapter.MenuAdapterViewHolder vh) {
 
-//                ((TabFragmentTW.Callback) getActivity())
-//                        .onItemSelected(FoodContract.FoodEntry.buildFoodUri(id)
-//                                ,FoodContract.IngrEntry.buildIngrByFoodUri(id), vh );
+                Log.i(LOG_TAG, "ClickOn TabFragmenNW");
+
+                ((TabFragmentTW.Callback) getActivity())
+                        .onItemSelectedMenu(type, id, date, vh );
 
                 //Toast.makeText(getActivity(),"Click on: "+id, Toast.LENGTH_SHORT).show();
             }
@@ -114,14 +116,66 @@ public class TabFragmentNW extends Fragment implements LoaderManager.LoaderCallb
         cal.add(Calendar.DATE, 6);
         endDate = df.format(cal.getTime());
 
+        Uri mUri = MenuEntry.CONTENT_URI;
+        String sMenuByDate = FoodContract.MenuEntry.COLUMN_DATE + " BETWEEN ? AND ?";
+
+        Cursor mCursor= getActivity().getContentResolver().query(
+                mUri,
+                null,
+                sMenuByDate,                           // selection = Condicion del WHERE
+                new String []{initDate, endDate},        // selectionArgs = arg del WHERE
+                null
+        );
+
+
+        if(mCursor.getCount() == 0) {
+            cal = Calendar.getInstance();
+            dayofweek = cal.get(Calendar.DAY_OF_WEEK);
+            shift = 7 - dayofweek + 1;
+            cal.add(Calendar.DATE, shift);
+            String sDate = df.format(cal.getTime());
+
+            Vector<ContentValues> cVVector = new Vector<ContentValues>(7);
+            String sWeek = "nextweek";
+
+            for (int i = 1; i <= 7; i++) {
+
+                ContentValues values = new ContentValues();
+
+                values.put(MenuEntry.COLUMN_DATE, sDate);
+                values.put(MenuEntry.COLUMN_LUNCH, "Empty");
+                values.put(MenuEntry.COLUMN_DINNER, "Empty");
+
+                cVVector.add(values);
+
+                cal.add(Calendar.DATE, 1);
+                sDate = df.format(cal.getTime());
+
+            }
+
+            int inserted = 0;
+
+
+            //            // add to database
+            Log.i(LOG_TAG, "Creando registros en base de datos. Tabla Menu ");
+
+            if (cVVector.size() > 0) {
+                ContentValues[] cvArray = new ContentValues[cVVector.size()];
+                cVVector.toArray(cvArray);
+
+                inserted = getActivity().getContentResolver().bulkInsert(MenuEntry.CONTENT_URI, cvArray);
+                Log.i(LOG_TAG, "Registros nuevos creados en Tabla Menu: " + inserted);
+            }
+        }
+
+
+
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        Log.i(LOG_TAG, "Dentro de onCreateLoader");
 
         mUri = MenuEntry.CONTENT_URI;
         String sMenuByDate = FoodContract.MenuEntry.COLUMN_DATE + " BETWEEN ? AND ?";
