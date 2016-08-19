@@ -34,6 +34,7 @@ public class FoodProvider extends ContentProvider {
     static final int INGR_WITH_ID = 201;
     static final int MENU = 300;
     static final int MENU_BTW_DATE = 301;
+    static final int MENU_LIST_INGR = 400;
 
     static UriMatcher buildUriMatcher() {
 
@@ -46,6 +47,7 @@ public class FoodProvider extends ContentProvider {
         matcher.addURI(authority, FoodContract.PATH_INGR + "/*", INGR_WITH_ID);
         matcher.addURI(authority, FoodContract.PATH_MENU, MENU);
         matcher.addURI(authority, FoodContract.PATH_MENU + "/*", MENU_BTW_DATE);
+        matcher.addURI(authority, FoodContract.PATH_MENU + "/*/*", MENU_LIST_INGR);
 
         return matcher;
 
@@ -128,6 +130,25 @@ public class FoodProvider extends ContentProvider {
         );
     }
 
+    private static final String sListIngr = FoodContract.MenuEntry.COLUMN_DATE + " BETWEEN ? AND ?";
+
+    private Cursor getListIngr(Uri uri, String[] projection, String[] arg, String sortOrder) {
+
+        //String foodId = FoodContract.MenuEntry.getMenuIDbyUri(uri);
+
+        return mOpenHelper.getReadableDatabase().query(
+                FoodContract.MenuEntry.TABLE_NAME+" INNER JOIN "+FoodContract.IngrEntry.TABLE_NAME
+                +" ON "+FoodContract.MenuEntry.COLUMN_ID_LUNCH+" = "+FoodContract.IngrEntry.COLUMN_ID_FOOD+" OR "+
+                FoodContract.MenuEntry.COLUMN_ID_DINNER+" = "+FoodContract.IngrEntry.COLUMN_ID_FOOD,  //tabla
+                projection,                                             // columnas a mostrar
+                sListIngr,                                          // condicion WHERE
+                arg,                                                    // arg del WHERE
+                null,
+                null,
+                sortOrder
+        );
+    }
+
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
@@ -194,6 +215,11 @@ public class FoodProvider extends ContentProvider {
 
             case MENU_BTW_DATE: {
                 retCursor = getMenuByDate(uri, projection, selectionArgs, sortOrder);
+                break;
+            }
+
+            case MENU_LIST_INGR: {
+                retCursor = getListIngr(uri, projection, selectionArgs, sortOrder);
                 break;
             }
 

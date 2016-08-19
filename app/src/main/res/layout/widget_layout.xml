@@ -1,0 +1,46 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/widget_margin"
+            android:padding="1dp"
+            android:id="@+id/widget"
+    android:background="@android:color/holo_blue_bright">
+
+
+            <TextView
+                android:id="@+id/today"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="18sp"
+                android:text="Today"
+                android:paddingBottom="5dp"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:id="@+id/w_lunch"
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="18sp"
+                android:text="lunch"
+                android:paddingBottom="5dp"
+                android:gravity="center_vertical|center_horizontal" />
+
+            <TextView
+                android:id="@+id/w_dinner"
+                android:layout_width="125dp"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="18sp"
+                android:text="dinner"
+                android:paddingBottom="5dp"
+                android:gravity="center_vertical|center_horizontal" />
+
+
+</LinearLayout>
+
+

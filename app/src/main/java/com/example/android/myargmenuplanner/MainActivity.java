@@ -1,6 +1,7 @@
 package com.example.android.myargmenuplanner;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -100,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements TabFragmentTW.Cal
          */
 
         android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout, toolbar,R.string.app_name,
                 R.string.app_name);
 
@@ -163,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements TabFragmentTW.Cal
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 
     @Override

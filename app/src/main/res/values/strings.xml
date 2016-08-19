@@ -32,5 +32,6 @@
     <string name="date">Date</string>
     <string name="title_activity_ingredients">IngredientsActivity</string>
 
+    <string name="empty_list">List of Ingredients, Empty.</string>
 
 </resources>

@@ -2,6 +2,7 @@ package com.example.android.myargmenuplanner;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -36,6 +37,8 @@ public class TabFragmentTW extends Fragment implements LoaderManager.LoaderCallb
     private static final String LOG_TAG = TabFragmentTW.class.getSimpleName();
     static final String DETAIL_URI = "URI";
     private Uri mUri;
+    public static final String ACTION_DATA_UPDATED =
+            "com.example.android.myargmenuplanner.ACTION_DATA_UPDATED";
 
     public static String initDate, endDate;
     private MenuAdapter mMenuAdapter;
@@ -137,6 +140,14 @@ public class TabFragmentTW extends Fragment implements LoaderManager.LoaderCallb
         super.onActivityCreated(savedInstanceState);
     }
 
+    private void updateWidgets() {
+        Context context = getActivity();
+        // Setting the package ensures that only components in our app will receive the broadcast
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
+                .setPackage(context.getPackageName());
+        context.sendBroadcast(dataUpdatedIntent);
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
@@ -169,6 +180,8 @@ public class TabFragmentTW extends Fragment implements LoaderManager.LoaderCallb
 
 
         }
+        updateWidgets();
+
     }
 
     @Override

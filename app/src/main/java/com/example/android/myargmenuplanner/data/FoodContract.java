@@ -119,6 +119,11 @@ public class FoodContract {
             return CONTENT_URI.buildUpon().appendPath(week).build();
         }
 
+        public static Uri buildIngrByWeekUri() {
+
+            return CONTENT_URI.buildUpon().appendPath("list").appendPath("show").build();
+        }
+
         public static String getMenuIDbyUri(Uri uri) {
             return uri.getPathSegments().get(1);
         }

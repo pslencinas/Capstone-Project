@@ -6,40 +6,47 @@
     android:paddingRight="@dimen/list_item_extra_padding"
     >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
 
-        android:orientation="horizontal"
-        android:layout_margin="8dp"
-        android:padding="1dp">
-
-        <TextView
-            android:id="@+id/list_ingr_name"
-            android:layout_width="250dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:textSize="16sp"
-            android:paddingBottom="5dp"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_margin="8dp"
+            android:padding="1dp">
 
-        <TextView
-            android:id="@+id/list_ingr_qty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:textSize="16sp"
-            android:paddingBottom="5dp"/>
-        <TextView
-            android:id="@+id/list_ingr_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:textSize="16sp"
-            android:paddingBottom="5dp"/>
+            <TextView
+                android:id="@+id/date_ingr"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="16sp"
+                android:paddingBottom="5dp"/>
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/list_ingr_name"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="16sp"
+                android:paddingBottom="5dp"/>
 
+            <TextView
+                android:id="@+id/list_ingr_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="16sp"
+                android:paddingBottom="5dp"/>
+            <TextView
+                android:id="@+id/list_ingr_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:textSize="16sp"
+                android:paddingBottom="5dp"/>
+
+        </LinearLayout>
 
 
 </FrameLayout>

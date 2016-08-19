@@ -152,8 +152,10 @@ public class DetailFoodFragment extends Fragment implements LoaderManager.Loader
 
                     if(mTypeOfMeal.equals("lunch")){
                         foodValues.put(FoodContract.MenuEntry.COLUMN_LUNCH, "Empty");
+                        foodValues.put(FoodContract.MenuEntry.COLUMN_ID_LUNCH, "0");
                     }else{
                         foodValues.put(FoodContract.MenuEntry.COLUMN_DINNER, "Empty");
+                        foodValues.put(FoodContract.MenuEntry.COLUMN_ID_DINNER, "0");
                     }
 
 

@@ -22,6 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /**
  * {@link IngrWeekAdapter} exposes a list of weather forecasts
@@ -46,9 +51,11 @@ public class IngrWeekAdapter extends RecyclerView.Adapter<IngrWeekAdapter.IngrWe
         public final TextView mNameView;
         public final TextView mQtyView;
         public final TextView mUnitView;
+        public final TextView mDateView;
 
         public IngrWeekAdapterViewHolder(View view) {
             super(view);
+            mDateView = (TextView) view.findViewById(R.id.date_ingr);
             mNameView = (TextView) view.findViewById(R.id.list_ingr_name);
             mQtyView = (TextView) view.findViewById(R.id.list_ingr_qty);
             mUnitView = (TextView) view.findViewById(R.id.list_ingr_unit);
@@ -74,11 +81,25 @@ public class IngrWeekAdapter extends RecyclerView.Adapter<IngrWeekAdapter.IngrWe
 
         mCursor.moveToPosition(position);
 
-        // Read date from cursor
+        String date = mCursor.getString(IngredientsFragment.COL_DATE);
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateObj = null;
+        try {
+            dateObj = df.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        SimpleDateFormat postFormater = new SimpleDateFormat("EEE dd, MMM");
+        String newDateStr = postFormater.format(dateObj);
+
+
         String name = mCursor.getString(IngredientsFragment.COL_NAME);
         String qty = mCursor.getString(IngredientsFragment.COL_QTY);
         String unit = mCursor.getString(IngredientsFragment.COL_UNIT);
 
+        viewHolder.mDateView.setText(newDateStr);
         viewHolder.mNameView.setText(name);
         viewHolder.mQtyView.setText(qty);
         viewHolder.mUnitView.setText(unit);
