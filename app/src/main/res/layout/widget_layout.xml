@@ -1,46 +1,69 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:layout_margin="@dimen/widget_margin"
-            android:padding="1dp"
-            android:id="@+id/widget"
-    android:background="@android:color/holo_blue_bright">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/widget_margin">
+
+    <LinearLayout
+        android:id="@+id/widget"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
 
 
-            <TextView
-                android:id="@+id/today"
-                android:layout_width="100dp"
-                android:layout_height="match_parent"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="18sp"
-                android:text="Today"
-                android:paddingBottom="5dp"
-                android:gravity="center_vertical" />
+        <TextView
+            android:id="@+id/today"
+            android:layout_width="0dp"
+            android:layout_weight=".20"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="Today"
+            android:paddingBottom="5dp"
+            android:gravity="center_vertical" />
 
-            <TextView
-                android:id="@+id/w_lunch"
-                android:layout_width="125dp"
-                android:layout_height="match_parent"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="18sp"
-                android:text="lunch"
-                android:paddingBottom="5dp"
-                android:gravity="center_vertical|center_horizontal" />
+        <TextView
+            android:id="@+id/w_lunch"
+            android:layout_width="0dp"
+            android:layout_weight=".40"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="20sp"
+            android:text="lunch"
+            android:textColor="@color/black"
+            android:elevation="2dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/my_border_menu"
+            android:gravity="fill_vertical|center_horizontal"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/today"/>
 
-            <TextView
-                android:id="@+id/w_dinner"
-                android:layout_width="125dp"
-                android:layout_height="match_parent"
-                android:fontFamily="sans-serif-condensed"
-                android:textSize="18sp"
-                android:text="dinner"
-                android:paddingBottom="5dp"
-                android:gravity="center_vertical|center_horizontal" />
+        <TextView
+            android:id="@+id/w_dinner"
+            android:layout_width="0dp"
+            android:layout_weight=".40"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif-condensed"
+            android:textSize="20sp"
+            android:text="dinner"
+            android:layout_margin="2dp"
+            android:textColor="@color/black"
+            android:elevation="2dp"
+            android:background="@drawable/my_border_menu"
+            android:textAlignment="center"
+            android:gravity="fill_vertical|center_horizontal"
+            android:layout_toRightOf="@+id/w_lunch"
+/>
 
 
-</LinearLayout>
+    </LinearLayout>
 
-
+</FrameLayout>

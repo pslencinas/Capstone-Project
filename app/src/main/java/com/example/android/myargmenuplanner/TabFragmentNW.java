@@ -144,7 +144,9 @@ public class TabFragmentNW extends Fragment implements LoaderManager.LoaderCallb
 
                 values.put(MenuEntry.COLUMN_DATE, sDate);
                 values.put(MenuEntry.COLUMN_LUNCH, "Empty");
+                values.put(MenuEntry.COLUMN_ID_LUNCH, "0");
                 values.put(MenuEntry.COLUMN_DINNER, "Empty");
+                values.put(MenuEntry.COLUMN_ID_DINNER, "0");
 
                 cVVector.add(values);
 

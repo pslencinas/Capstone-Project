@@ -8,50 +8,66 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/list_item_extra_padding"
-        android:paddingRight="@dimen/list_item_extra_padding"
+
+
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:paddingBottom="10dp" android:paddingTop="10dp">
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp">
 
 
                 <TextView
                     android:id="@+id/tv_day"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight=".20"
+                    android:layout_height="match_parent"
                     android:fontFamily="sans-serif-condensed"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:text="@string/text_day1"
-                    android:paddingBottom="5dp"/>
+                    android:padding="10dp"
+                    android:gravity="fill_vertical" />
 
                 <TextView
                     android:id="@+id/tv_lunch"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight=".40"
+                    android:layout_height="match_parent"
                     android:fontFamily="sans-serif-condensed"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:text="@string/text_empty"
-                    android:paddingBottom="5dp" android:gravity="center_horizontal"/>
+                    android:padding="4dp"
+                    android:layout_margin="2dp"
+                    android:elevation="2dp"
+                    android:background="@drawable/my_border_menu"
+                    android:gravity="fill_vertical|center_horizontal"/>
 
                 <TextView
                     android:id="@+id/tv_dinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight=".40"
+                    android:layout_height="match_parent"
                     android:fontFamily="sans-serif-condensed"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:text="@string/text_empty"
-                    android:paddingBottom="5dp" android:gravity="center_horizontal"/>
+                    android:padding="4dp"
+                    android:layout_margin="2dp"
+                    android:elevation="2dp"
+                    android:background="@drawable/my_border_menu"
+                    android:textAlignment="center"
+                    android:gravity="fill_vertical|center_horizontal" />
 
         </LinearLayout>
         <View
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"/>
 

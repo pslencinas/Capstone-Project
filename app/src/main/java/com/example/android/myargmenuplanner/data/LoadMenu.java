@@ -90,13 +90,9 @@ public class LoadMenu extends AsyncTask<String, Void, String[]> {
 
             Log.i(LOG_TAG, "Init Date: " + date);
             Vector<ContentValues> cVVector = new Vector<ContentValues>(14 - dayofweek);
-            String sWeek = "thisweek";
 
             for (int i = dayofweek; i <= 14; i++) {
 
-                if (i > 7) {
-                    sWeek = "nextweek";
-                }
                 ContentValues values = new ContentValues();
 
                 values.put(MenuEntry.COLUMN_DATE, sDate);
@@ -140,7 +136,6 @@ public class LoadMenu extends AsyncTask<String, Void, String[]> {
             while(mCursor.moveToNext()){
 
                 date = mCursor.getString(1);
-                week = mCursor.getString(2);
 
                 if(dateNow.equals(date)){
 

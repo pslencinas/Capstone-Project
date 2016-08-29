@@ -88,6 +88,13 @@ public class MainActivity extends AppCompatActivity implements TabFragmentTW.Cal
 
                 }
 
+                if (menuItem.getItemId() == R.id.nav_search) {
+
+                    Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                    startActivity(intent);
+
+                }
+
 
 
 

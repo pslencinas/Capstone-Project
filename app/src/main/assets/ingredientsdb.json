@@ -13,8 +13,28 @@
           {"id_food":"0003",            "name": "Tapas de empanadas",            "qty": "1",            "unit": "u"          },
           {"id_food":"0004",            "name": "Asado",            "qty": "1",            "unit": "Kg"          },
           {"id_food":"0004",            "name": "Vacio",            "qty": "1",            "unit": "Kg"          },
-          {"id_food":"0004",            "name": "Morcilla",            "qty": "4",            "unit": "u"          }
-	]
+          {"id_food":"0004",            "name": "Morcilla",            "qty": "4",            "unit": "u"          },
+          {"id_food":"0005",            "name": "Papa",            "qty": "6",            "unit": "u"          },
+          {"id_food":"0005",            "name": "Mantenca",            "qty": "",            "unit": ""          },
+          {"id_food":"0005",            "name": "Cebolla",            "qty": "2",            "unit": "u"          },
+          {"id_food":"0005",            "name": "Perejil",            "qty": "2",            "unit": "u"          },
+          {"id_food":"0005",            "name": "Sal",            "qty": "",            "unit": ""          },
+          {"id_food":"0005",            "name": "Queso fresco",            "qty": "200",            "unit": "g"          },
+          {"id_food":"0005",            "name": "Aceite de Oliva",            "qty": "",            "unit": ""          },
+          {"id_food":"0005",            "name": "Huevos",            "qty": "8",            "unit": "u"          },
+          {"id_food":"0005",            "name": "Morrón",            "qty": "1",            "unit": "u"          },
+          {"id_food":"0005",            "name": "Orégano",            "qty": "",            "unit": ""          },
+          {"id_food":"0005",            "name": "Pimienta",            "qty": "",            "unit": ""          },
+          {"id_food":"0006",            "name": "Salchichas",            "qty": "6",            "unit": "u"          },
+          {"id_food":"0006",            "name": "Pan de Pancho",            "qty": "6",            "unit": "u"          },
+          {"id_food":"0006",            "name": "Mayonesa",            "qty": "",            "unit": ""          },
+          {"id_food":"0007",            "name": "Hamburguesas",            "qty": "6",            "unit": "u"          },
+          {"id_food":"0007",            "name": "Pan de Hamburguesas",            "qty": "6",            "unit": "u"          },
+          {"id_food":"0007",            "name": "Mayonesa",            "qty": "",            "unit": ""          },
+          {"id_food":"0007",            "name": "Cheddar",            "qty": "6",            "unit": "u"          },
+          {"id_food":"0007",            "name": "Tomates",            "qty": "1",            "unit": "u"          }
+
+    ]
 
 
 }

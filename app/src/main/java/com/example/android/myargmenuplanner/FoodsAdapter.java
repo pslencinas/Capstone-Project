@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.myargmenuplanner.data.FoodContract;
+import com.squareup.picasso.Picasso;
 
 import static android.R.attr.choiceMode;
 import static android.os.Build.VERSION_CODES.M;
@@ -64,6 +65,8 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodsAdapter
 
 
         public final TextView mTitleView;
+        public final TextView mTimeView;
+        public final ImageView mImageView;
 
         public FoodsAdapterViewHolder(View view) {
 
@@ -71,7 +74,8 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodsAdapter
 
 
             mTitleView = (TextView) view.findViewById(R.id.list_item_title);
-
+            mTimeView = (TextView) view.findViewById(R.id.list_item_time);
+            mImageView = (ImageView) view.findViewById(R.id.imageView);
 
             view.setOnClickListener(this);
 
@@ -117,9 +121,19 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodsAdapter
         mCursor.moveToPosition(position);
 
         String title = mCursor.getString(FoodsFragment.COL_TITLE);
+        String time = mCursor.getString(FoodsFragment.COL_TIME);
+
+        String image_id = mCursor.getString(FoodsFragment.COL_IMG_ID);
+
+        String url = "https://docs.google.com/uc?id="+image_id;
+        //String url = "https://dl.dropboxusercontent.com/u/96819748/"+image_id;
+
+        Picasso.with(mContext)
+                .load(url)
+                .into(viewHolder.mImageView);
 
         viewHolder.mTitleView.setText(title);
-
+        viewHolder.mTimeView.setText("Preparation: "+time);
 
     }
 

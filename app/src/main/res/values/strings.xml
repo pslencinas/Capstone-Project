@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Arg Menu Planner</string>
+    <string name="app_name">My Menu Planner</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -7,8 +7,8 @@
     <string name="action_settings">Settings</string>
 
     <!--Navigation drawer Options    !-->
-    <string name="nav_nd_ingredients">Ingredients for this week </string>
-    <string name="nav_nd_foods">Foods </string>
+    <string name="nav_nd_ingredients">Meals ingredients for this week </string>
+    <string name="nav_nd_meals">Meals </string>
     <string name="nav_nd_search">Search Food </string>
     <string name="nav_nd_option">Options </string>
 
@@ -17,12 +17,14 @@
     <string name="text_day1">Monday</string>
     <string name="text_day2">Tuesday</string>
     <string name="text_day3">Wednesday</string>
-    <string name="text_day4">Thrusday</string>
+    <string name="text_day4">Thursday</string>
     <string name="text_day5">Friday</string>
     <string name="text_day6">Saturday</string>
     <string name="text_day7">Sunday</string>
 
     <string name="text_empty">Empty</string>
+
+    <string name="directions">How to prepare:</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -33,5 +35,11 @@
     <string name="title_activity_ingredients">IngredientsActivity</string>
 
     <string name="empty_list">List of Ingredients, Empty.</string>
+
+    <string name="title_search">Search Meal per Ingredients</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="title_activity_search">SearchActivity</string>
+
+    <string name="btn_search">Search</string>
 
 </resources>

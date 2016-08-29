@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/list_item_extra_padding"
@@ -11,36 +12,52 @@
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/list_item_extra_padding"
         android:paddingRight="@dimen/list_item_extra_padding"
+        style="@style/FontListOfFood"
         android:orientation="vertical">
 
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:gravity="center_vertical"
             android:minHeight="?android:attr/listPreferredItemHeight"
-            android:paddingLeft="@dimen/abc_list_item_padding_horizontal_material"
-            android:paddingRight="@dimen/abc_list_item_padding_horizontal_material"
-            android:orientation="horizontal">
+             android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight=".90"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:minHeight="?android:attr/listPreferredItemHeight"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/list_item_title"
+                    android:layout_height="60dp"
+                    style="@style/ItemListOfFood"
+                    android:text="item title"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:id="@+id/list_item_time"
+                    style="@style/ItemListOfFood"
+                    android:textSize="14sp"
+                    android:layout_height="40dp"
+                    android:text="preration: "/>
 
 
-            <TextView
-                android:id="@+id/list_item_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                android:text="item title"
-                android:background="@drawable/my_border"
-                android:padding="8dp"/>
+             </LinearLayout>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView"
+                android:focusableInTouchMode="false" />
+
+        </LinearLayout>
 
 
-        </RelativeLayout>
-
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
 
     </LinearLayout>
 </FrameLayout>

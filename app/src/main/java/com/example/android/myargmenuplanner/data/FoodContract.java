@@ -50,6 +50,7 @@ public class FoodContract {
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_IMAGE_ID = "image_id";
         public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_TIME = "time";
 
         // content://CONTENT_AUTHORITY/foods/id
         public static Uri buildFoodUri(long id) {

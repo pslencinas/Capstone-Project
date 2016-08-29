@@ -2,28 +2,59 @@
 	"foods":[
 		{
 			"title":"Milanesas",
-            "image_id":"mila_0001.jpg",
+            "image_id":"0B8jlzq6A84NtQmlqeWFnQlhualk",
 			"description":"como se hace",
+            "time":"45min",
 			"id":"0001"
 		},
 		{
 			"title":"Fideos",
-            "image_id":"fide_0001.jpg",
+            "image_id":"0B8jlzq6A84NtXzExeTBFRDNvUDA",
 			"description":"asi se hacen",
+            "time":"40min",
 			"id":"0002"
 		},
         {
           "title":"Empanadas",
-          "image_id":"empa_0001.jpg",
+          "image_id":"0B8jlzq6A84NtOEU0eGFJMVYzWU0",
           "description":"Empanadas Tucumanas",
+          "time":"45min",
           "id":"0003"
         },
         {
           "title":"Asado",
-          "image_id":"asad_0001.jpg",
+          "image_id":"0B8jlzq6A84NtZXNZdkZ3SWZBdTg",
           "description":"A la parrilla",
+          "time":"1h 30min",
           "id":"0004"
-        }
+        },
+      {
+        "title":"Tortilla de Papa",
+        "image_id":"0B8jlzq6A84NtSEtYcE94Yk10VFk",
+        "description":"Pelar las papas y cortarlas en rodajas, freírlas por 5 minutos y reservar. 
+Aparte, transparentar la cebolla picada en manteca y aceite. Reservar.
+Aparte, transparentar el morrón, también picado. Reservar.
+Para el armado, batir los huevos y sumar el orégano, perejil, cebolla, morrón, el queso en cubitos, las papas también en cubitos y condimentar con sal, pimienta, orégano y perejil. Integrar bien.
+Para la cocción, calentar la sartén con aceite y volcar la mezcla.
+Cuando se despegua del fondo, darla vuelta colocando un poquito más de aceite sobre la sartén.
+Dorar y servir.",
+        "time":"30min",
+        "id":"0005"
+      },
+      {
+        "title":"Panchos",
+        "image_id":"0B8jlzq6A84NtRWwtd0N6RkRRVTQ",
+        "description":"muy facil",
+        "time":"20min",
+        "id":"0006"
+      },
+      {
+        "title":"Hamburguesas",
+        "image_id":"0B8jlzq6A84NtdUhjTnJSQXFXVUU",
+        "description":"muy facil",
+        "time":"20min",
+        "id":"0007"
+      }
 	]
 
 

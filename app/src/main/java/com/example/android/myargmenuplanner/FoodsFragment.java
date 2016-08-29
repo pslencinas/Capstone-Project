@@ -47,6 +47,7 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
             FoodContract.FoodEntry.COLUMN_ID,
             FoodContract.FoodEntry.COLUMN_TITLE,
             FoodContract.FoodEntry.COLUMN_IMAGE_ID,
+            FoodContract.FoodEntry.COLUMN_TIME,
 
 
     };
@@ -54,7 +55,7 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
     static final int COL_ID = 1;
     static final int COL_TITLE = 2;
     static final int COL_IMG_ID = 3;
-
+    static final int COL_TIME = 4;
 
     private ImageView mImageView;
     private TextView mTitleView;

@@ -239,7 +239,8 @@ public class DetailFoodFragment extends Fragment implements LoaderManager.Loader
                 String description = data.getString(COL_DESCRIPTION);
                 String image_id = data.getString(COL_IMAGE_ID);
 
-                String url = "https://dl.dropboxusercontent.com/u/96819748/"+image_id;
+                String url = "https://docs.google.com/uc?id="+image_id;
+                //String url = "https://dl.dropboxusercontent.com/u/96819748/"+image_id;
                 Log.i(LOG_TAG, "URL: "+url);
 
                 mTitleView.setText(title);
