@@ -18,12 +18,14 @@ package com.example.android.myargmenuplanner;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,12 +65,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
         public final TextView mDayView;
         public final TextView mLunchView;
         public final TextView mDinnerView;
+        public final LinearLayout mLinearLayout;
 
         public MenuAdapterViewHolder(View view) {
             super(view);
             mDayView = (TextView) view.findViewById(R.id.tv_day);
             mLunchView = (TextView) view.findViewById(R.id.tv_lunch);
             mDinnerView = (TextView) view.findViewById(R.id.tv_dinner);
+            mLinearLayout=(LinearLayout)view.findViewById(R.id.layout_menu);
 
             mLunchView.setOnClickListener(this);
             mDinnerView.setOnClickListener(this);
@@ -125,6 +129,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
 
         mCursor.moveToPosition(position);
 
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
         // Read date from cursor
         String date = mCursor.getString(TabFragmentTW.COL_DATE);
         String lunch = mCursor.getString(TabFragmentTW.COL_LUNCH);
@@ -133,7 +139,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuAdapterVie
         viewHolder.mLunchView.setText(lunch);
         viewHolder.mDinnerView.setText(dinner);
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        if(!lunch.equals("Empty")){
+            viewHolder.mLunchView.setTextColor(Color.parseColor("#7986cb"));
+
+        }
+        if(!dinner.equals("Empty")){
+            viewHolder.mDinnerView.setTextColor(Color.parseColor("#7986cb"));
+
+        }
         Date dateObj = null;
         try {
             dateObj = df.parse(date);

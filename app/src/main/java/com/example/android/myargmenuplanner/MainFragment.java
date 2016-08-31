@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,6 +24,9 @@ import android.widget.ListView;
 
 import com.example.android.myargmenuplanner.data.FetchJsonDataTask;
 import com.example.android.myargmenuplanner.data.FoodContract;
+import com.example.android.myargmenuplanner.data.LoadMenu;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import static android.R.attr.id;
 import static com.example.android.myargmenuplanner.FoodsFragment.COL_ID;
@@ -76,24 +80,9 @@ public class MainFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
 
-        mRecView = (RecyclerView) rootView.findViewById(R.id.recyclerview_menu);
-        mRecView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.containerView,new TabFragment()).commit();
 
-//        mMenuAdapter = new MenuAdapter(getActivity(), new MenuAdapter.MenuAdapterOnClickHandler() {
-//            @Override
-//            public void onClick(String id, MenuAdapter.MenuAdapterViewHolder vh) {
-//
-//                ((MainFragment.Callback) getActivity())
-//                        .onItemSelected(FoodContract.FoodEntry.buildFoodUri(id)
-//                                ,FoodContract.IngrEntry.buildIngrByFoodUri(id), vh );
-//            }
-//        });
-
-
-        mRecView.setAdapter(mMenuAdapter);
-
-        FetchJsonDataTask fetch = new FetchJsonDataTask(getActivity());
-        fetch.execute();
 
         return rootView;
     }
@@ -101,52 +90,14 @@ public class MainFragment extends Fragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
+        FetchJsonDataTask fetch = new FetchJsonDataTask(getActivity());
+        fetch.execute();
+        LoadMenu menu = new LoadMenu(getActivity());
+        menu.execute();
 
         super.onActivityCreated(savedInstanceState);
     }
 
-
-
-//
-//    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-//
-//        Uri orderUri;
-//
-//        if(orderBy.equals("favorites")){
-//            orderUri = MovieContract.FavoriteEntry.CONTENT_URI;
-//
-//            return new CursorLoader(getActivity(),  //context
-//                    orderUri,                       //URI
-//                    FAVORITE_COLUMNS,               //Projection = columnas a devolver
-//                    null,                           //condicion del query
-//                    null,                           //argumentos
-//                    null);                          //orden
-//
-//        }else{
-//            orderUri = MovieContract.MovieEntry.CONTENT_URI;
-//
-//            return new CursorLoader(getActivity(),  //context
-//                    orderUri,                       //URI
-//                    MOVIE_COLUMNS,                  //Projection = columnas a devolver
-//                    null,                           //condicion del query
-//                    null,                           //argumentos
-//                    null);                          //orden
-//
-//        }
-//
-//
-//
-//    }
-//
-//    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//
-//        mMovieAdapter.swapCursor(data);
-//
-//    }
-//
-//    public void onLoaderReset(Loader<Cursor> loader) {
-//        mMovieAdapter.swapCursor(null);
-//    }
 
 
 }

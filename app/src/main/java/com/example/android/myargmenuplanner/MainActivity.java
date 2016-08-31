@@ -1,6 +1,7 @@
 package com.example.android.myargmenuplanner;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.Pair;
 import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -35,10 +37,11 @@ import com.example.android.myargmenuplanner.data.LoadMenu;
 import static android.R.attr.id;
 import static android.R.attr.name;
 
-public class MainActivity extends AppCompatActivity implements TabFragmentTW.Callback{
+public class MainActivity extends AppCompatActivity implements TabFragmentTW.Callback, FoodsFragment.Callback{
 
     private final String LOG_TAG = MainActivity.class.getSimpleName();
-    private boolean mTwoPane=false;
+    public boolean mTwoPane=false;
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -56,18 +59,24 @@ public class MainActivity extends AppCompatActivity implements TabFragmentTW.Cal
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.nav_view) ;
 
-        /**
-         * Lets inflate the very first fragment
-         * Here , we are inflating the TabFragment as the first Fragment
-         */
+        if (findViewById(R.id.food_detail_container) != null) {
+            mTwoPane = true;
+            Log.d(LOG_TAG, "TABLET!!!!!");
 
-        mFragmentManager = getSupportFragmentManager();
-        mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.replace(R.id.containerView,new TabFragment()).commit();
+            if (savedInstanceState == null) {
+//                getSupportFragmentManager().beginTransaction()
+//                        .replace(R.id.food_detail_container, new FoodsFragment(), DETAILFRAGMENT_TAG)
+//                        .commit();
+            }
+        } else {
+            Log.d(LOG_TAG, "Dentro del ELSE de onCreate MainActivity!!!!!");
+            mTwoPane = false;
 
-/**
- * Setup click events on the Navigation View Items.
- */
+        }
+
+
+
+
 
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -76,23 +85,63 @@ public class MainActivity extends AppCompatActivity implements TabFragmentTW.Cal
 
                 if (menuItem.getItemId() == R.id.nav_ingredients) {
 
-                    Intent intent = new Intent(MainActivity.this, IngredientsActivity.class);
-                    startActivity(intent);
+                    if(mTwoPane){
+                        Bundle extras = new Bundle();
+                        extras.putString("TYPE", "SHOW");
 
+                        IngredientsFragment fragment = new IngredientsFragment();
+                        fragment.setArguments(extras);
+
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.food_detail_container, fragment, DETAILFRAGMENT_TAG)
+                                .commit();
+
+                    }else {
+                        Intent intent = new Intent(MainActivity.this, IngredientsActivity.class);
+                        startActivity(intent);
+                    }
                 }
 
                 if (menuItem.getItemId() == R.id.nav_foods) {
 
-                    Intent intent = new Intent(MainActivity.this, FoodsActivity.class);
-                    startActivity(intent);
+
+                    if(mTwoPane){
+                        Bundle extras = new Bundle();
+                        extras.putString("TYPE", "SHOW");
+
+                        FoodsFragment fragment = new FoodsFragment();
+                        fragment.setArguments(extras);
+
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.food_detail_container, fragment, DETAILFRAGMENT_TAG)
+                                .commit();
+
+                    }else {
+
+                        Intent intent = new Intent(MainActivity.this, FoodsActivity.class);
+                        startActivity(intent);
+                    }
+
 
                 }
 
                 if (menuItem.getItemId() == R.id.nav_search) {
 
-                    Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                    startActivity(intent);
+                    if(mTwoPane){
+                        Bundle extras = new Bundle();
+                        extras.putString("TYPE", "SHOW");
 
+                        SearchIngredientsFragment fragment = new SearchIngredientsFragment();
+                        fragment.setArguments(extras);
+
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.food_detail_container, fragment, DETAILFRAGMENT_TAG)
+                                .commit();
+
+                    }else {
+                        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                        startActivity(intent);
+                    }
                 }
 
 
@@ -117,14 +166,14 @@ public class MainActivity extends AppCompatActivity implements TabFragmentTW.Cal
         mDrawerToggle.syncState();
 
 
-        FetchJsonDataTask fetch = new FetchJsonDataTask(this);
-        fetch.execute();
-        LoadMenu menu = new LoadMenu(this);
-        menu.execute();
+
+
+
 
 
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -180,6 +229,17 @@ public class MainActivity extends AppCompatActivity implements TabFragmentTW.Cal
     public void onItemSelectedMenu(String type_of_meal, String meal, String date, MenuAdapter.MenuAdapterViewHolder vh) {
         if (mTwoPane) {
 
+            Bundle extras = new Bundle();
+            extras.putString("TYPE", type_of_meal);
+            extras.putString("DATE", date);
+
+            FoodsFragment fragment = new FoodsFragment();
+            fragment.setArguments(extras);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.food_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .commit();
+
 //            Bundle args = new Bundle();
 //            args.putParcelable(DetailFragment.DETAIL_URI, contentUri);
 //
@@ -190,8 +250,6 @@ public class MainActivity extends AppCompatActivity implements TabFragmentTW.Cal
 //                    .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
 //                    .commit();
         } else {
-            //Intent intent = new Intent(this, DetailFoodActivity.class).setData(contentUri);
-
 
 
             if(meal.equals("Empty")){
@@ -232,4 +290,59 @@ public class MainActivity extends AppCompatActivity implements TabFragmentTW.Cal
 
         }
     }
+
+    @Override
+    public void onItemSelected(String type, String mDate, Uri contentUriFood, Uri contentUriIngr, FoodsAdapter.FoodsAdapterViewHolder vh) {
+
+        //Intent intent = new Intent(this, DetailFoodActivity.class).setData(contentUri);
+        if(type.equals("lunch") || type.equals("dinner")){
+//                Log.i("FoodsActivity", "Dentro de onItemSelected: TYPE_OF_MEAL: "+type);
+
+            //contentUriFood contiene el URI de la comida seleccionada  ->  content://BASE/foods/id
+
+            String mSelection = FoodContract.FoodEntry.COLUMN_ID +  " = ?";
+            String[] mSelArgs = {FoodContract.FoodEntry.getFoodIDbyUri(contentUriFood)};
+            String[] mProj = {FoodContract.FoodEntry.COLUMN_TITLE};
+
+            Cursor mCursor = this.getContentResolver().
+                    query(FoodContract.FoodEntry.CONTENT_URI,mProj , mSelection, mSelArgs,null);
+
+            mCursor.moveToFirst();
+            int nameColumnIndex = mCursor.getColumnIndex(FoodContract.FoodEntry.COLUMN_TITLE);
+
+            String mSelectionClause = FoodContract.MenuEntry.COLUMN_DATE +  " = ?";
+            String[] mSelectionArgs = {mDate};
+
+
+            ContentValues foodValues = new ContentValues();
+            if(type.equals("lunch")){
+                foodValues.put(FoodContract.MenuEntry.COLUMN_LUNCH, mCursor.getString(nameColumnIndex));
+                foodValues.put(FoodContract.MenuEntry.COLUMN_ID_LUNCH, FoodContract.FoodEntry.getFoodIDbyUri(contentUriFood));
+            }else{
+                foodValues.put(FoodContract.MenuEntry.COLUMN_DINNER, mCursor.getString(nameColumnIndex));
+                foodValues.put(FoodContract.MenuEntry.COLUMN_ID_DINNER, FoodContract.FoodEntry.getFoodIDbyUri(contentUriFood));
+            }
+
+
+            int rowUpdated = this.getContentResolver().
+                    update(FoodContract.MenuEntry.CONTENT_URI, foodValues, mSelectionClause, mSelectionArgs);
+
+
+        }else {
+            Bundle extras = new Bundle();
+            extras.putString("URI_FOOD", contentUriFood.toString());
+            extras.putString("URI_INGR", contentUriIngr.toString());
+            extras.putString("FROM_MENU", "NO");
+
+            DetailFoodFragment fragment = new DetailFoodFragment();
+            fragment.setArguments(extras);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.food_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .commit();
+
+        }
+
+    }
+
 }

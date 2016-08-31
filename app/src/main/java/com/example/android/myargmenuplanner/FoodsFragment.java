@@ -67,7 +67,7 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
     public static String description;
     public static String food_id;
     public static String image_id;
-
+    private Bundle arguments;
     public FoodsFragment() {
         setHasOptionsMenu(true);
     }
@@ -86,7 +86,7 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
 
 
         TYPE_OF_MEAL = "";
-        Bundle arguments = getArguments();
+        arguments = getArguments();
         if (arguments != null) {
             //mUri = arguments.getParcelable(DetailFoodFragment.DETAIL_URI);
             TYPE_OF_MEAL = arguments.getString("TYPE");
@@ -115,9 +115,6 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
         });
 
 
-
-
-        // specify an adapter (see also next example)
         mRecyclerView.setAdapter(mFoodsAdapter);
 
         return rootView;
@@ -130,6 +127,8 @@ public class FoodsFragment extends Fragment implements LoaderManager.LoaderCallb
 
 
         getLoaderManager().initLoader(DETAIL_LOADER, null, this);
+
+
         super.onActivityCreated(savedInstanceState);
     }
 

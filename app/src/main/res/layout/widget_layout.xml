@@ -7,9 +7,10 @@
     <LinearLayout
         android:id="@+id/widget"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="90dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:background="@drawable/my_border_widget"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:paddingLeft="2dp"
@@ -26,18 +27,39 @@
             android:fontFamily="sans-serif-condensed"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:text="Today"
+            android:text="@string/today"
             android:paddingBottom="5dp"
             android:gravity="center_vertical" />
 
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight=".40"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="@string/lunch"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="2dp" />
+
         <TextView
             android:id="@+id/w_lunch"
-            android:layout_width="0dp"
-            android:layout_weight=".40"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="sans-serif-condensed"
             android:textSize="20sp"
-            android:text="lunch"
+            android:text="@string/lunch"
             android:textColor="@color/black"
             android:elevation="2dp"
             android:layout_margin="2dp"
@@ -46,10 +68,33 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/today"/>
 
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight=".40"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:text="@string/dinner"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="2dp" />
+
         <TextView
             android:id="@+id/w_dinner"
-            android:layout_width="0dp"
-            android:layout_weight=".40"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fontFamily="sans-serif-condensed"
             android:textSize="20sp"
@@ -61,9 +106,9 @@
             android:textAlignment="center"
             android:gravity="fill_vertical|center_horizontal"
             android:layout_toRightOf="@+id/w_lunch"
-/>
+        />
 
-
+    </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>

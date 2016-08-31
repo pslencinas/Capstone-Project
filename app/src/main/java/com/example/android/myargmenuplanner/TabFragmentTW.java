@@ -23,6 +23,8 @@ import android.widget.Toast;
 
 import com.example.android.myargmenuplanner.data.FoodContract;
 import com.example.android.myargmenuplanner.data.FoodContract.MenuEntry;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -37,14 +39,16 @@ public class TabFragmentTW extends Fragment implements LoaderManager.LoaderCallb
     private static final String LOG_TAG = TabFragmentTW.class.getSimpleName();
     static final String DETAIL_URI = "URI";
     private Uri mUri;
+
     public static final String ACTION_DATA_UPDATED =
             "com.example.android.myargmenuplanner.ACTION_DATA_UPDATED";
 
-    public static String initDate, endDate;
+    public static String initDate, endDate, dateNow;
     private MenuAdapter mMenuAdapter;
     private FoodsAdapter mFoodsAdapter;
     private RecyclerView mRecyclerView;
     private static final int DETAIL_LOADER = 0;
+    private AdView mAdView;
 
     private static final String[] MENU_COLUMNS = {
 
@@ -84,6 +88,13 @@ public class TabFragmentTW extends Fragment implements LoaderManager.LoaderCallb
 
         View rootView = inflater.inflate(R.layout.fragment_rv_menu, container, false);
 
+        mAdView = (AdView) rootView.findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+
+        // Start loading the ad in the background.
+        mAdView.loadAd(adRequest);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_menu);
         // Set the layout manager
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -108,13 +119,36 @@ public class TabFragmentTW extends Fragment implements LoaderManager.LoaderCallb
         return rootView;
     }
 
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
-        String dateNow = df.format(cal.getTime());
+        dateNow = df.format(cal.getTime());
         int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
         initDate = "";
         endDate = "";
